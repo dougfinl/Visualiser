@@ -13,6 +13,23 @@
 		CA307FEB1E1567F900D6C0D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA307FE91E1567F900D6C0D6 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CA30801B1E15681400D6C0D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CA307FFC1E15681300D6C0D6;
+			remoteInfo = LibVisualiser;
+		};
+		CA30801D1E15681400D6C0D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CA3080051E15681300D6C0D6;
+			remoteInfo = LibVisualiserTests;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		CA307FE01E1567F900D6C0D6 /* Visualiser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Visualiser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA307FE31E1567F900D6C0D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -20,6 +37,7 @@
 		CA307FE71E1567F900D6C0D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA307FEA1E1567F900D6C0D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CA307FEC1E1567F900D6C0D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibVisualiser.xcodeproj; path = LibVisualiser/LibVisualiser.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +54,7 @@
 		CA307FD71E1567F900D6C0D6 = {
 			isa = PBXGroup;
 			children = (
+				CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */,
 				CA307FE21E1567F900D6C0D6 /* Visualiser */,
 				CA307FE11E1567F900D6C0D6 /* Products */,
 			);
@@ -59,6 +78,15 @@
 				CA307FEC1E1567F900D6C0D6 /* Info.plist */,
 			);
 			path = Visualiser;
+			sourceTree = "<group>";
+		};
+		CA3080171E15681300D6C0D6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CA30801C1E15681400D6C0D6 /* LibVisualiser.framework */,
+				CA30801E1E15681400D6C0D6 /* LibVisualiserTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -109,12 +137,35 @@
 			mainGroup = CA307FD71E1567F900D6C0D6;
 			productRefGroup = CA307FE11E1567F900D6C0D6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = CA3080171E15681300D6C0D6 /* Products */;
+					ProjectRef = CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				CA307FDF1E1567F900D6C0D6 /* Visualiser */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		CA30801C1E15681400D6C0D6 /* LibVisualiser.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = LibVisualiser.framework;
+			remoteRef = CA30801B1E15681400D6C0D6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CA30801E1E15681400D6C0D6 /* LibVisualiserTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LibVisualiserTests.xctest;
+			remoteRef = CA30801D1E15681400D6C0D6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		CA307FDE1E1567F900D6C0D6 /* Resources */ = {
