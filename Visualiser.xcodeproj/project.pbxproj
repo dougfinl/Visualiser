@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		CA307FE41E1567F900D6C0D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA307FE31E1567F900D6C0D6 /* AppDelegate.swift */; };
-		CA307FE61E1567F900D6C0D6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA307FE51E1567F900D6C0D6 /* ViewController.swift */; };
 		CA307FE81E1567F900D6C0D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA307FE71E1567F900D6C0D6 /* Assets.xcassets */; };
 		CA307FEB1E1567F900D6C0D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA307FE91E1567F900D6C0D6 /* Main.storyboard */; };
+		CA30802A1E15C44500D6C0D6 /* MetalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3080291E15C44500D6C0D6 /* MetalViewController.swift */; };
+		CA3080651E16839200D6C0D6 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = CA3080641E16839200D6C0D6 /* Shaders.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,11 +34,12 @@
 /* Begin PBXFileReference section */
 		CA307FE01E1567F900D6C0D6 /* Visualiser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Visualiser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA307FE31E1567F900D6C0D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CA307FE51E1567F900D6C0D6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CA307FE71E1567F900D6C0D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA307FEA1E1567F900D6C0D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CA307FEC1E1567F900D6C0D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibVisualiser.xcodeproj; path = LibVisualiser/LibVisualiser.xcodeproj; sourceTree = "<group>"; };
+		CA3080291E15C44500D6C0D6 /* MetalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalViewController.swift; path = ../MetalViewController.swift; sourceTree = "<group>"; };
+		CA3080641E16839200D6C0D6 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,10 +74,11 @@
 			isa = PBXGroup;
 			children = (
 				CA307FE31E1567F900D6C0D6 /* AppDelegate.swift */,
-				CA307FE51E1567F900D6C0D6 /* ViewController.swift */,
 				CA307FE71E1567F900D6C0D6 /* Assets.xcassets */,
 				CA307FE91E1567F900D6C0D6 /* Main.storyboard */,
+				CA3080291E15C44500D6C0D6 /* MetalViewController.swift */,
 				CA307FEC1E1567F900D6C0D6 /* Info.plist */,
+				CA3080641E16839200D6C0D6 /* Shaders.metal */,
 			);
 			path = Visualiser;
 			sourceTree = "<group>";
@@ -184,7 +187,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA307FE61E1567F900D6C0D6 /* ViewController.swift in Sources */,
+				CA3080651E16839200D6C0D6 /* Shaders.metal in Sources */,
+				CA30802A1E15C44500D6C0D6 /* MetalViewController.swift in Sources */,
 				CA307FE41E1567F900D6C0D6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,6 +344,7 @@
 				CA307FF11E1567F900D6C0D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
