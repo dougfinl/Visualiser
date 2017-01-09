@@ -13,6 +13,9 @@
 		CA30802A1E15C44500D6C0D6 /* MetalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3080291E15C44500D6C0D6 /* MetalViewController.swift */; };
 		CA3080651E16839200D6C0D6 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = CA3080641E16839200D6C0D6 /* Shaders.metal */; };
 		CA3080671E1D2E0E00D6C0D6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3080661E1D2E0E00D6C0D6 /* Utils.swift */; };
+		CA47AB191E22D13200518BE8 /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = CA47AB181E22D13200518BE8 /* teapot.obj */; };
+		CA703F8D1E22B92C00D824BF /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA703F8C1E22B92C00D824BF /* Mesh.swift */; };
+		CA703F8F1E22BAA600D824BF /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA703F8E1E22BAA600D824BF /* Submesh.swift */; };
 		CA9D8D641E1E56DE00FBD5F3 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +46,9 @@
 		CA3080291E15C44500D6C0D6 /* MetalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalViewController.swift; path = ../MetalViewController.swift; sourceTree = "<group>"; };
 		CA3080641E16839200D6C0D6 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		CA3080661E1D2E0E00D6C0D6 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		CA47AB181E22D13200518BE8 /* teapot.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
+		CA703F8C1E22B92C00D824BF /* Mesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
+		CA703F8E1E22BAA600D824BF /* Submesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Submesh.swift; sourceTree = "<group>"; };
 		CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,6 +66,7 @@
 		CA307FD71E1567F900D6C0D6 = {
 			isa = PBXGroup;
 			children = (
+				CA47AB181E22D13200518BE8 /* teapot.obj */,
 				CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */,
 				CA307FE21E1567F900D6C0D6 /* Visualiser */,
 				CA307FE11E1567F900D6C0D6 /* Products */,
@@ -85,6 +92,8 @@
 				CA307FEC1E1567F900D6C0D6 /* Info.plist */,
 				CA3080641E16839200D6C0D6 /* Shaders.metal */,
 				CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */,
+				CA703F8C1E22B92C00D824BF /* Mesh.swift */,
+				CA703F8E1E22BAA600D824BF /* Submesh.swift */,
 			);
 			path = Visualiser;
 			sourceTree = "<group>";
@@ -181,6 +190,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA47AB191E22D13200518BE8 /* teapot.obj in Resources */,
 				CA307FE81E1567F900D6C0D6 /* Assets.xcassets in Resources */,
 				CA307FEB1E1567F900D6C0D6 /* Main.storyboard in Resources */,
 			);
@@ -193,10 +203,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA703F8D1E22B92C00D824BF /* Mesh.swift in Sources */,
 				CA3080651E16839200D6C0D6 /* Shaders.metal in Sources */,
 				CA9D8D641E1E56DE00FBD5F3 /* Camera.swift in Sources */,
 				CA30802A1E15C44500D6C0D6 /* MetalViewController.swift in Sources */,
 				CA307FE41E1567F900D6C0D6 /* AppDelegate.swift in Sources */,
+				CA703F8F1E22BAA600D824BF /* Submesh.swift in Sources */,
 				CA3080671E1D2E0E00D6C0D6 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,26 +12,6 @@ import MetalKit
 let MaxInflightBuffers = 3
 let ConstantBufferSize = 1024*1024
 
-let cubeVertexData: [Float] = [
-    -0.5,  0.5,  0.5, 1.0,
-    -0.5, -0.5,  0.5, 1.0,
-     0.5, -0.5,  0.5, 1.0,
-     
-     0.5, -0.5,  0.5, 1.0,
-     0.5,  0.5,  0.5, 1.0,
-    -0.5,  0.5,  0.5, 1.0
-]
-
-let cubeColorData: [Float] = [
-    1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0,
-    
-    1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0
-]
-
 struct Uniforms {
     var viewMatrix: float4x4
     var projectionMatrix: float4x4
@@ -51,6 +31,8 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
     
     let inflightSemaphore = DispatchSemaphore(value: MaxInflightBuffers)
     var bufferIndex = 0
+    
+    var meshes: [Mesh] = []
     
     var camera: ArcballCamera! = nil
     
@@ -84,30 +66,40 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         commandQueue = device.makeCommandQueue()
         commandQueue.label = "main command queue"
         
+        
         // MARK: load shaders
         let defaultLibrary = device.newDefaultLibrary()!
         
         let simpleSceneVertexFunction = defaultLibrary.makeFunction(name: "simpleSceneVertex")!
         let simpleSceneFragmentFunction = defaultLibrary.makeFunction(name: "simpleSceneFragment")!
         
+        // Create the pipeline vertex descriptor
+        let mtlVertexDescriptor = MTLVertexDescriptor()
+        mtlVertexDescriptor.attributes[0].format = .float3
+        mtlVertexDescriptor.attributes[0].offset = 0
+        mtlVertexDescriptor.attributes[0].bufferIndex = 0
+        
+        mtlVertexDescriptor.attributes[1].format = .float3
+        mtlVertexDescriptor.attributes[1].offset = 12
+        mtlVertexDescriptor.attributes[1].bufferIndex = 0
+        
+        mtlVertexDescriptor.layouts[0].stride = 28      // FIXME: this value is incorrect
+        mtlVertexDescriptor.layouts[0].stepRate = 1
+        mtlVertexDescriptor.layouts[0].stepFunction = .perVertex
+        
         let simpleScenePipelineStateDescriptor = MTLRenderPipelineDescriptor()
+        simpleScenePipelineStateDescriptor.label = "SimpleScenePipeline"
         simpleScenePipelineStateDescriptor.vertexFunction = simpleSceneVertexFunction
         simpleScenePipelineStateDescriptor.fragmentFunction = simpleSceneFragmentFunction
         simpleScenePipelineStateDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat
         simpleScenePipelineStateDescriptor.sampleCount = view.sampleCount
+        simpleScenePipelineStateDescriptor.vertexDescriptor = mtlVertexDescriptor
         
         do {
             try simpleScenePipelineState = device.makeRenderPipelineState(descriptor: simpleScenePipelineStateDescriptor)
         } catch let error {
             NSLog("Failed to make simple scene pipeline state: \(error)")
         }
-        
-        vertexBuffer = device.makeBuffer(length: ConstantBufferSize, options: [])
-        vertexBuffer.label = "vertices"
-        
-        let vertexColorSize = cubeVertexData.count * MemoryLayout<Float>.size
-        vertexColorBuffer = device.makeBuffer(bytes: cubeColorData, length: vertexColorSize, options: [])
-        vertexColorBuffer.label = "colors"
         
         uniformBuffer = device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [])
         uniformBuffer.label = "uniforms"
@@ -118,6 +110,38 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         camera.viewportWidth = Float(drawableSize.width)
         camera.viewportHeight = Float(drawableSize.height)
         camera.update()
+        
+        // MARK: load the teapot
+        let mdlVertexDescriptor = MTKModelIOVertexDescriptorFromMetal(mtlVertexDescriptor)
+        (mdlVertexDescriptor.attributes[0] as! MDLVertexAttribute).name = MDLVertexAttributePosition
+        (mdlVertexDescriptor.attributes[1] as! MDLVertexAttribute).name = MDLVertexAttributeNormal
+        
+        let meshBufferAllocator = MTKMeshBufferAllocator(device: device)
+        
+        guard let teapotURL = Bundle.main.url(forResource: "teapot", withExtension: "obj") else {
+            NSLog("error: could not find resource teapot.obj")
+            return
+        }
+        
+        let asset = MDLAsset(url: teapotURL, vertexDescriptor: mdlVertexDescriptor, bufferAllocator: meshBufferAllocator)
+        
+        var mdlMeshes: NSArray? = NSArray.init()
+        var mtkMeshes: [MTKMesh] = []
+        
+        do {
+            try mtkMeshes = MTKMesh.newMeshes(from: asset, device: device, sourceMeshes: &mdlMeshes)
+        } catch let error {
+            NSLog("error: failed to create mesh: \(error)")
+            return
+        }
+        
+        NSLog("meshes size: \(mtkMeshes.count)")
+        assert(mtkMeshes.count == mdlMeshes!.count, "mdlMesh and mtkMesh arrays differ in size")
+        
+        for (i, m) in mtkMeshes.enumerated() {
+            let mesh = Mesh(mtkMesh: m, mdlMesh: mdlMeshes![i] as! MDLMesh, device: device)
+            meshes.append(mesh)
+        }
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -153,14 +177,15 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
             renderEncoder.label = "render encoder"
            
             renderEncoder.pushDebugGroup("drawing cube")
+            renderEncoder.setViewport(MTLViewport(originX: 0, originY: 0, width: Double(view.drawableSize.width), height: Double(view.drawableSize.height), znear: 0, zfar: 1))
             renderEncoder.setRenderPipelineState(simpleScenePipelineState)
-            renderEncoder.setVertexBuffer(vertexBuffer, offset: 256*bufferIndex, at: 0)
-            renderEncoder.setVertexBuffer(vertexColorBuffer, offset: 0, at: 1)
             renderEncoder.setVertexBuffer(uniformBuffer, offset: 0, at: 2)
             renderEncoder.setFrontFacing(.counterClockwise)
             renderEncoder.setCullMode(.back)
             
-            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 9, instanceCount: 1)
+            for mesh in meshes {
+                mesh.render(encoder: renderEncoder)
+            }
             
             renderEncoder.popDebugGroup()
             renderEncoder.endEncoding()
@@ -175,11 +200,6 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
     }
     
     func update() {
-        let pData = vertexBuffer.contents()
-        let vData = (pData + 256 * bufferIndex).bindMemory(to: Float.self, capacity: 256 / MemoryLayout<Float>.stride)
-        
-        vData.initialize(from: cubeVertexData)
-                
         // MARK: fill the uniform buffer
         let pUniforms = uniformBuffer.contents()
         var uniforms = Uniforms(viewMatrix: camera.viewMatrix,

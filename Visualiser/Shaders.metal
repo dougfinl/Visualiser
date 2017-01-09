@@ -15,23 +15,30 @@ struct Uniforms {
     float4x4 projectionMatrix;
 };
 
-struct VertexInOut {
+struct VertexIn {
+    float4 position [[attribute(0)]];
+    float4 normal [[attribute(1)]];
+};
+
+struct VertexOut {
     float4 position [[position]];
+    float4 normal;
     float4 color;
 };
 
-vertex VertexInOut simpleSceneVertex(uint vid [[vertex_id]],
-                                     constant packed_float4 *position [[buffer(0)]],
-                                     constant packed_float4 *color [[buffer(1)]],
-                                     constant Uniforms *uniforms [[buffer(2)]]) {
-    VertexInOut outVertex;
+vertex VertexOut simpleSceneVertex(VertexIn current [[stage_in]],
+                                   constant Uniforms *uniforms [[buffer(2)]]) {
+    VertexOut vertexOut;
     
-    outVertex.position = uniforms->projectionMatrix * uniforms->viewMatrix * float4(position[vid]);
-    outVertex.color = color[vid];
+    float4x4 viewProjection = uniforms->projectionMatrix * uniforms->viewMatrix;
     
-    return outVertex;
+    vertexOut.position = viewProjection * current.position;
+    vertexOut.normal = viewProjection * current.normal;
+    vertexOut.color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+    
+    return vertexOut;
 }
 
-fragment half4 simpleSceneFragment(VertexInOut inFrag [[stage_in]]) {
+fragment half4 simpleSceneFragment(VertexOut inFrag [[stage_in]]) {
     return half4(inFrag.color);
 }
