@@ -48,7 +48,7 @@ class ArcballCamera: Camera {
         pitch = 0
         nearClip = 1
         farClip = 100
-        fov = 90
+        fov = radians(fromDegrees: 90)
         
         position = [0, 0, 10]
         up = [0, 1, 0]
