@@ -36,6 +36,8 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
     
     var camera: ArcballCamera! = nil
     
+    var mtlVertexDescriptor: MTLVertexDescriptor! = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -74,7 +76,7 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         let simpleSceneFragmentFunction = defaultLibrary.makeFunction(name: "simpleSceneFragment")!
         
         // Create the pipeline vertex descriptor
-        let mtlVertexDescriptor = MTLVertexDescriptor()
+        mtlVertexDescriptor = MTLVertexDescriptor()
         mtlVertexDescriptor.attributes[0].format = .float3
         mtlVertexDescriptor.attributes[0].offset = 0
         mtlVertexDescriptor.attributes[0].bufferIndex = 0
@@ -110,38 +112,6 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         camera.viewportWidth = Float(drawableSize.width)
         camera.viewportHeight = Float(drawableSize.height)
         camera.update()
-        
-        // MARK: load the teapot
-        let mdlVertexDescriptor = MTKModelIOVertexDescriptorFromMetal(mtlVertexDescriptor)
-        (mdlVertexDescriptor.attributes[0] as! MDLVertexAttribute).name = MDLVertexAttributePosition
-        (mdlVertexDescriptor.attributes[1] as! MDLVertexAttribute).name = MDLVertexAttributeNormal
-        
-        let meshBufferAllocator = MTKMeshBufferAllocator(device: device)
-        
-        guard let teapotURL = Bundle.main.url(forResource: "teapot", withExtension: "obj") else {
-            NSLog("error: could not find resource teapot.obj")
-            return
-        }
-        
-        let asset = MDLAsset(url: teapotURL, vertexDescriptor: mdlVertexDescriptor, bufferAllocator: meshBufferAllocator)
-        
-        var mdlMeshes: NSArray? = NSArray.init()
-        var mtkMeshes: [MTKMesh] = []
-        
-        do {
-            try mtkMeshes = MTKMesh.newMeshes(from: asset, device: device, sourceMeshes: &mdlMeshes)
-        } catch let error {
-            NSLog("error: failed to create mesh: \(error)")
-            return
-        }
-        
-        NSLog("meshes size: \(mtkMeshes.count)")
-        assert(mtkMeshes.count == mdlMeshes!.count, "mdlMesh and mtkMesh arrays differ in size")
-        
-        for (i, m) in mtkMeshes.enumerated() {
-            let mesh = Mesh(mtkMesh: m, mdlMesh: mdlMeshes![i] as! MDLMesh, device: device)
-            meshes.append(mesh)
-        }
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -216,6 +186,50 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
     override public func scrollWheel(with event: NSEvent) {
         camera.radius -= Float(event.scrollingDeltaY / 20.0)
         camera.update()
+    }
+    
+    func loadModel(fromFile fileURL: URL) {
+        NSLog("importing \(fileURL)")
+
+        let mdlVertexDescriptor = MTKModelIOVertexDescriptorFromMetal(mtlVertexDescriptor)
+        (mdlVertexDescriptor.attributes[0] as! MDLVertexAttribute).name = MDLVertexAttributePosition
+        (mdlVertexDescriptor.attributes[1] as! MDLVertexAttribute).name = MDLVertexAttributeNormal
+        
+        let meshBufferAllocator = MTKMeshBufferAllocator(device: device)
+        
+        let asset = MDLAsset(url: fileURL, vertexDescriptor: mdlVertexDescriptor, bufferAllocator: meshBufferAllocator)
+        
+        var mdlMeshes: NSArray? = NSArray.init()
+        var mtkMeshes: [MTKMesh] = []
+        
+        do {
+            try mtkMeshes = MTKMesh.newMeshes(from: asset, device: device, sourceMeshes: &mdlMeshes)
+        } catch let error {
+            NSLog("error: failed to create mesh: \(error)")
+            return
+        }
+        
+        assert(mtkMeshes.count == mdlMeshes!.count, "mdlMesh and mtkMesh arrays differ in size")
+        
+        for (i, m) in mtkMeshes.enumerated() {
+            let mesh = Mesh(mtkMesh: m, mdlMesh: mdlMeshes![i] as! MDLMesh, device: device)
+            self.meshes.append(mesh)
+        }
+    }
+    
+    @IBAction func importMenuItemClicked(sender: NSMenuItem) {
+        let openPanel = NSOpenPanel()
+        openPanel.title = "Choose a 3D Model"
+        openPanel.canChooseDirectories = false
+        openPanel.allowsMultipleSelection = false
+        openPanel.allowedFileTypes = ["obj", "abc", "ply", "stl"]
+        
+        openPanel.begin { (result: Int) in
+            if (result == NSFileHandlingPanelOKButton) {
+                let fileURL = openPanel.url!
+                self.loadModel(fromFile: fileURL)
+            }
+        }
     }
     
 }
