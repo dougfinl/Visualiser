@@ -10,30 +10,13 @@
 		CA307FE41E1567F900D6C0D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA307FE31E1567F900D6C0D6 /* AppDelegate.swift */; };
 		CA307FE81E1567F900D6C0D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA307FE71E1567F900D6C0D6 /* Assets.xcassets */; };
 		CA307FEB1E1567F900D6C0D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA307FE91E1567F900D6C0D6 /* Main.storyboard */; };
-		CA30802A1E15C44500D6C0D6 /* MetalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3080291E15C44500D6C0D6 /* MetalViewController.swift */; };
 		CA3080651E16839200D6C0D6 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = CA3080641E16839200D6C0D6 /* Shaders.metal */; };
 		CA3080671E1D2E0E00D6C0D6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3080661E1D2E0E00D6C0D6 /* Utils.swift */; };
+		CA6161921E25ACA2000E7C80 /* MetalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6161911E25ACA2000E7C80 /* MetalViewController.swift */; };
 		CA703F8D1E22B92C00D824BF /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA703F8C1E22B92C00D824BF /* Mesh.swift */; };
 		CA703F8F1E22BAA600D824BF /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA703F8E1E22BAA600D824BF /* Submesh.swift */; };
 		CA9D8D641E1E56DE00FBD5F3 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		CA30801B1E15681400D6C0D6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CA307FFC1E15681300D6C0D6;
-			remoteInfo = LibVisualiser;
-		};
-		CA30801D1E15681400D6C0D6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CA3080051E15681300D6C0D6;
-			remoteInfo = LibVisualiserTests;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		CA307FE01E1567F900D6C0D6 /* Visualiser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Visualiser.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,10 +24,9 @@
 		CA307FE71E1567F900D6C0D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA307FEA1E1567F900D6C0D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CA307FEC1E1567F900D6C0D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibVisualiser.xcodeproj; path = LibVisualiser/LibVisualiser.xcodeproj; sourceTree = "<group>"; };
-		CA3080291E15C44500D6C0D6 /* MetalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalViewController.swift; path = ../MetalViewController.swift; sourceTree = "<group>"; };
 		CA3080641E16839200D6C0D6 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		CA3080661E1D2E0E00D6C0D6 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		CA6161911E25ACA2000E7C80 /* MetalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalViewController.swift; sourceTree = "<group>"; };
 		CA703F8C1E22B92C00D824BF /* Mesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		CA703F8E1E22BAA600D824BF /* Submesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Submesh.swift; sourceTree = "<group>"; };
 		CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
@@ -64,7 +46,6 @@
 		CA307FD71E1567F900D6C0D6 = {
 			isa = PBXGroup;
 			children = (
-				CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */,
 				CA307FE21E1567F900D6C0D6 /* Visualiser */,
 				CA307FE11E1567F900D6C0D6 /* Products */,
 			);
@@ -84,7 +65,7 @@
 				CA307FE31E1567F900D6C0D6 /* AppDelegate.swift */,
 				CA307FE71E1567F900D6C0D6 /* Assets.xcassets */,
 				CA307FE91E1567F900D6C0D6 /* Main.storyboard */,
-				CA3080291E15C44500D6C0D6 /* MetalViewController.swift */,
+				CA6161911E25ACA2000E7C80 /* MetalViewController.swift */,
 				CA3080661E1D2E0E00D6C0D6 /* Utils.swift */,
 				CA307FEC1E1567F900D6C0D6 /* Info.plist */,
 				CA3080641E16839200D6C0D6 /* Shaders.metal */,
@@ -93,15 +74,6 @@
 				CA703F8E1E22BAA600D824BF /* Submesh.swift */,
 			);
 			path = Visualiser;
-			sourceTree = "<group>";
-		};
-		CA3080171E15681300D6C0D6 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CA30801C1E15681400D6C0D6 /* LibVisualiser.framework */,
-				CA30801E1E15681400D6C0D6 /* LibVisualiserTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,35 +124,12 @@
 			mainGroup = CA307FD71E1567F900D6C0D6;
 			productRefGroup = CA307FE11E1567F900D6C0D6 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = CA3080171E15681300D6C0D6 /* Products */;
-					ProjectRef = CA3080161E15681300D6C0D6 /* LibVisualiser.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				CA307FDF1E1567F900D6C0D6 /* Visualiser */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		CA30801C1E15681400D6C0D6 /* LibVisualiser.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = LibVisualiser.framework;
-			remoteRef = CA30801B1E15681400D6C0D6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CA30801E1E15681400D6C0D6 /* LibVisualiserTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = LibVisualiserTests.xctest;
-			remoteRef = CA30801D1E15681400D6C0D6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		CA307FDE1E1567F900D6C0D6 /* Resources */ = {
@@ -202,9 +151,9 @@
 				CA703F8D1E22B92C00D824BF /* Mesh.swift in Sources */,
 				CA3080651E16839200D6C0D6 /* Shaders.metal in Sources */,
 				CA9D8D641E1E56DE00FBD5F3 /* Camera.swift in Sources */,
-				CA30802A1E15C44500D6C0D6 /* MetalViewController.swift in Sources */,
 				CA307FE41E1567F900D6C0D6 /* AppDelegate.swift in Sources */,
 				CA703F8F1E22BAA600D824BF /* Submesh.swift in Sources */,
+				CA6161921E25ACA2000E7C80 /* MetalViewController.swift in Sources */,
 				CA3080671E1D2E0E00D6C0D6 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
