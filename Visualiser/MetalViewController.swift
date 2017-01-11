@@ -9,13 +9,24 @@
 import Cocoa
 import MetalKit
 
+enum VertexAttributes: Int {
+    case VertexAttributePosition = 0
+    case VertexAttributeNormal
+    case VertexAttributeTexCoord
+}
+
+enum TextureIndex: Int {
+    case DiffuseTextureIndex = 0
+}
+
+enum BufferIndex: Int {
+    case MeshVertexBuffer = 0
+    case FrameUniformBuffer
+    case MaterialUniformBuffer
+}
+
 let MaxInflightBuffers = 3
 let ConstantBufferSize = 1024*1024
-
-struct Uniforms {
-    var viewMatrix: float4x4
-    var projectionMatrix: float4x4
-}
 
 class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
     
@@ -77,17 +88,28 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         
         // Create the pipeline vertex descriptor
         mtlVertexDescriptor = MTLVertexDescriptor()
-        mtlVertexDescriptor.attributes[0].format = .float3
-        mtlVertexDescriptor.attributes[0].offset = 0
-        mtlVertexDescriptor.attributes[0].bufferIndex = 0
         
-        mtlVertexDescriptor.attributes[1].format = .float3
-        mtlVertexDescriptor.attributes[1].offset = 12
-        mtlVertexDescriptor.attributes[1].bufferIndex = 0
+        // Vertex
+        mtlVertexDescriptor.attributes[VertexAttributes.VertexAttributePosition.rawValue].format = .float3
+        mtlVertexDescriptor.attributes[VertexAttributes.VertexAttributePosition.rawValue].offset = 0
+        mtlVertexDescriptor.attributes[VertexAttributes.VertexAttributePosition.rawValue].bufferIndex = 0
         
-        mtlVertexDescriptor.layouts[0].stride = 28      // FIXME: this value is incorrect
+        // Normal
+        mtlVertexDescriptor.attributes[VertexAttributes.VertexAttributeNormal.rawValue].format = .float3
+        mtlVertexDescriptor.attributes[VertexAttributes.VertexAttributeNormal.rawValue].offset = 12
+        mtlVertexDescriptor.attributes[VertexAttributes.VertexAttributeNormal.rawValue].bufferIndex = 0
+        
+        // Texture coord
+        mtlVertexDescriptor.attributes[VertexAttributes.VertexAttributeTexCoord.rawValue].format = .half2
+        mtlVertexDescriptor.attributes[VertexAttributes.VertexAttributeTexCoord.rawValue].offset = 24
+        mtlVertexDescriptor.attributes[VertexAttributes.VertexAttributeTexCoord.rawValue].bufferIndex = 0
+        
+        // Single interleaved buffer
+        mtlVertexDescriptor.layouts[0].stride = 28
         mtlVertexDescriptor.layouts[0].stepRate = 1
         mtlVertexDescriptor.layouts[0].stepFunction = .perVertex
+        
+        
         
         let simpleScenePipelineStateDescriptor = MTLRenderPipelineDescriptor()
         simpleScenePipelineStateDescriptor.label = "SimpleScenePipeline"
@@ -103,7 +125,7 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
             NSLog("Failed to make simple scene pipeline state: \(error)")
         }
         
-        uniformBuffer = device.makeBuffer(length: MemoryLayout<Uniforms>.size, options: [])
+        uniformBuffer = device.makeBuffer(length: MemoryLayout<FrameUniforms>.size, options: [])
         uniformBuffer.label = "uniforms"
         
         // MARK: initialise the camera
@@ -149,7 +171,7 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
             renderEncoder.pushDebugGroup("drawing cube")
             renderEncoder.setViewport(MTLViewport(originX: 0, originY: 0, width: Double(view.drawableSize.width), height: Double(view.drawableSize.height), znear: 0, zfar: 1))
             renderEncoder.setRenderPipelineState(simpleScenePipelineState)
-            renderEncoder.setVertexBuffer(uniformBuffer, offset: 0, at: 2)
+            renderEncoder.setVertexBuffer(uniformBuffer, offset: 0, at: BufferIndex.FrameUniformBuffer.rawValue)
             renderEncoder.setFrontFacing(.counterClockwise)
             renderEncoder.setCullMode(.back)
             
@@ -172,9 +194,9 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
     func update() {
         // MARK: fill the uniform buffer
         let pUniforms = uniformBuffer.contents()
-        var uniforms = Uniforms(viewMatrix: camera.viewMatrix,
+        var uniforms = FrameUniforms(viewMatrix: camera.viewMatrix,
                                 projectionMatrix: camera.projectionMatrix)
-        memcpy(pUniforms, &uniforms, MemoryLayout<Uniforms>.size)
+        memcpy(pUniforms, &uniforms, MemoryLayout<FrameUniforms>.size)
     }
     
     override public func mouseDragged(with event: NSEvent) {
@@ -192,8 +214,9 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         NSLog("importing \(fileURL)")
 
         let mdlVertexDescriptor = MTKModelIOVertexDescriptorFromMetal(mtlVertexDescriptor)
-        (mdlVertexDescriptor.attributes[0] as! MDLVertexAttribute).name = MDLVertexAttributePosition
-        (mdlVertexDescriptor.attributes[1] as! MDLVertexAttribute).name = MDLVertexAttributeNormal
+        (mdlVertexDescriptor.attributes[VertexAttributes.VertexAttributePosition.rawValue] as! MDLVertexAttribute).name = MDLVertexAttributePosition
+        (mdlVertexDescriptor.attributes[VertexAttributes.VertexAttributeNormal.rawValue] as! MDLVertexAttribute).name = MDLVertexAttributeNormal
+        (mdlVertexDescriptor.attributes[VertexAttributes.VertexAttributeTexCoord.rawValue] as! MDLVertexAttribute).name = MDLVertexAttributeTextureCoordinate
         
         let meshBufferAllocator = MTKMeshBufferAllocator(device: device)
         

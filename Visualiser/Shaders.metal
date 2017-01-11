@@ -10,35 +10,76 @@
 using namespace metal;
 
 
-struct Uniforms {
+// MARK: binding points
+enum VertexAttributes {
+    VertexAttributePosition = 0,
+    VertexAttributeNormal   = 1,
+    VertexAttributeTexCoord = 2
+};
+
+enum TextureIndex {
+    DiffuseTextureIndex = 0
+};
+
+enum BufferIndex {
+    MeshVertexBuffer      = 0,
+    FrameUniformBuffer    = 1,
+    MaterialUniformBuffer = 2
+};
+    
+
+// MARK: data types
+struct FrameUniforms {
     float4x4 viewMatrix;
     float4x4 projectionMatrix;
 };
 
+struct MaterialUniforms {
+    float4 emissiveColor;
+    float4 diffuseColor;
+    float4 specularColor;
+    
+    float specularIntensity;
+    float pad1;
+    float pad2;
+    float pad3;
+};
+
 struct VertexIn {
-    float4 position [[attribute(0)]];
-    float4 normal [[attribute(1)]];
+    float4 position [[attribute(VertexAttributePosition)]];
+    float4 normal   [[attribute(VertexAttributeNormal)]];
+    half2  texCoord [[attribute(VertexAttributeTexCoord)]];
 };
 
 struct VertexOut {
     float4 position [[position]];
-    float4 normal;
-    float4 color;
+    half2  texCoord;
+    half4  color;
 };
 
+constexpr sampler s(coord::normalized,
+                    address::repeat,
+                    filter::linear);
+
 vertex VertexOut simpleSceneVertex(VertexIn current [[stage_in]],
-                                   constant Uniforms *uniforms [[buffer(2)]]) {
+                                   constant FrameUniforms *frameUniforms [[buffer(FrameUniformBuffer)]],
+                                   constant MaterialUniforms *materialUniforms [[buffer(MaterialUniformBuffer)]]) {
     VertexOut vertexOut;
     
-    float4x4 viewProjection = uniforms->projectionMatrix * uniforms->viewMatrix;
+    float4x4 viewProjection = frameUniforms->projectionMatrix * frameUniforms->viewMatrix;
     
     vertexOut.position = viewProjection * current.position;
-    vertexOut.normal = viewProjection * current.normal;
-    vertexOut.color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+//    vertexOut.color = half4(1.0f, 1.0f, 1.0f, 1.0f);
+    vertexOut.texCoord = current.texCoord;
     
     return vertexOut;
 }
 
-fragment half4 simpleSceneFragment(VertexOut inFrag [[stage_in]]) {
-    return half4(inFrag.color);
+fragment half4 simpleSceneFragment(VertexOut inFrag [[stage_in]],
+                                   texture2d<half> diffuseTexture [[texture(DiffuseTextureIndex)]]) {
+    constexpr sampler defaultSampler;
+    
+    half4 color = diffuseTexture.sample(defaultSampler, float2(inFrag.texCoord));
+    
+    return half4(color);
 }

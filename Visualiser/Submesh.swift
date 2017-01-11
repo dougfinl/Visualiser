@@ -12,11 +12,53 @@ class Submesh {
     
     private var submesh: MTKSubmesh
     
+    private var materialUniforms: MTLBuffer
+    
+    private var diffuseTexture: MTLTexture! = nil
+    
     init(mtkSubmesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, device: MTLDevice) {
         submesh = mtkSubmesh
+        
+        materialUniforms = device.makeBuffer(length: MemoryLayout<MaterialUniforms>.size, options: [])
+        var tmpMaterialUniforms = MaterialUniforms()
+        
+        if let property = mdlSubmesh.material?.property(with: .baseColor) {
+            if property.type == .string {
+                let diffuseTextureURL = URL(fileURLWithPath: property.stringValue!)
+                
+                let textureLoader = MTKTextureLoader(device: device)
+                do {
+                    try self.diffuseTexture = textureLoader.newTexture(withContentsOf: diffuseTextureURL, options: [:])
+                    NSLog("loaded diffuse texture \(diffuseTextureURL.absoluteString)")
+                } catch let error {
+                    NSLog("failed to load diffuse texture from \(diffuseTextureURL.absoluteString): \(error)")
+                }
+            } else if property.type == .float4 {
+                tmpMaterialUniforms.diffuseColor = property.float4Value
+            } else if property.type == .float3 {
+                tmpMaterialUniforms.diffuseColor.x = property.float3Value.x
+                tmpMaterialUniforms.diffuseColor.y = property.float3Value.y
+                tmpMaterialUniforms.diffuseColor.z = property.float3Value.z
+                tmpMaterialUniforms.diffuseColor.w = 1.0
+            } else {
+                NSLog("warning: found base color but cannot determine type")
+            }
+        }
+        
+//        NSLog("material uniforms: \(tmpMaterialUniforms)")
+        
+        let pMaterialUniforms = materialUniforms.contents()
+        memcpy(pMaterialUniforms, &tmpMaterialUniforms, MemoryLayout<MaterialUniforms>.size);
     }
     
     func render(encoder: MTLRenderCommandEncoder) {
+        if diffuseTexture != nil {
+            encoder.setFragmentTexture(diffuseTexture, at: TextureIndex.DiffuseTextureIndex.rawValue)
+        }
+        
+        encoder.setVertexBuffer(materialUniforms, offset: 0, at: BufferIndex.MaterialUniformBuffer.rawValue)
+        encoder.setFragmentBuffer(materialUniforms, offset: 0, at: BufferIndex.MaterialUniformBuffer.rawValue)
+        
         encoder.drawIndexedPrimitives(type: submesh.primitiveType, indexCount: submesh.indexCount, indexType: submesh.indexType, indexBuffer: submesh.indexBuffer.buffer, indexBufferOffset: submesh.indexBuffer.offset)
     }
     
