@@ -17,6 +17,9 @@
 		CA703F8D1E22B92C00D824BF /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA703F8C1E22B92C00D824BF /* Mesh.swift */; };
 		CA703F8F1E22BAA600D824BF /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA703F8E1E22BAA600D824BF /* Submesh.swift */; };
 		CA9D8D641E1E56DE00FBD5F3 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */; };
+		CAB0D8ED1E567B49006C3CAC /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D8EC1E567B49006C3CAC /* Stage.swift */; };
+		CAB0D90C1E5686A5006C3CAC /* VisualiserSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D90B1E5686A5006C3CAC /* VisualiserSplitViewController.swift */; };
+		CAB0D90E1E57D110006C3CAC /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D90D1E57D110006C3CAC /* InspectorViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		CA703F8C1E22B92C00D824BF /* Mesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		CA703F8E1E22BAA600D824BF /* Submesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Submesh.swift; sourceTree = "<group>"; };
 		CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		CAB0D8EC1E567B49006C3CAC /* Stage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
+		CAB0D90B1E5686A5006C3CAC /* VisualiserSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualiserSplitViewController.swift; sourceTree = "<group>"; };
+		CAB0D90D1E57D110006C3CAC /* InspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,10 +77,13 @@
 				CA6161941E25B6CD000E7C80 /* ShaderTypes.swift */,
 				CA3080661E1D2E0E00D6C0D6 /* Utils.swift */,
 				CA307FEC1E1567F900D6C0D6 /* Info.plist */,
+				CAB0D8EC1E567B49006C3CAC /* Stage.swift */,
 				CA3080641E16839200D6C0D6 /* Shaders.metal */,
 				CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */,
 				CA703F8C1E22B92C00D824BF /* Mesh.swift */,
 				CA703F8E1E22BAA600D824BF /* Submesh.swift */,
+				CAB0D90B1E5686A5006C3CAC /* VisualiserSplitViewController.swift */,
+				CAB0D90D1E57D110006C3CAC /* InspectorViewController.swift */,
 			);
 			path = Visualiser;
 			sourceTree = "<group>";
@@ -154,11 +163,14 @@
 				CA6161951E25B6CD000E7C80 /* ShaderTypes.swift in Sources */,
 				CA703F8D1E22B92C00D824BF /* Mesh.swift in Sources */,
 				CA3080651E16839200D6C0D6 /* Shaders.metal in Sources */,
+				CAB0D8ED1E567B49006C3CAC /* Stage.swift in Sources */,
 				CA9D8D641E1E56DE00FBD5F3 /* Camera.swift in Sources */,
 				CA307FE41E1567F900D6C0D6 /* AppDelegate.swift in Sources */,
 				CA703F8F1E22BAA600D824BF /* Submesh.swift in Sources */,
 				CA6161921E25ACA2000E7C80 /* MetalViewController.swift in Sources */,
+				CAB0D90C1E5686A5006C3CAC /* VisualiserSplitViewController.swift in Sources */,
 				CA3080671E1D2E0E00D6C0D6 /* Utils.swift in Sources */,
+				CAB0D90E1E57D110006C3CAC /* InspectorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

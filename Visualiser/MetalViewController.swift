@@ -49,6 +49,8 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
     
     var mtlVertexDescriptor: MTLVertexDescriptor! = nil
     
+    let notificationCenter = NotificationCenter.default
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -237,22 +239,13 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         for (i, m) in mtkMeshes.enumerated() {
             let mesh = Mesh(mtkMesh: m, mdlMesh: mdlMeshes![i] as! MDLMesh, device: device)
             self.meshes.append(mesh)
+            
+            selectMesh(mesh)
         }
     }
     
-    @IBAction func importMenuItemClicked(sender: NSMenuItem) {
-        let openPanel = NSOpenPanel()
-        openPanel.title = "Choose a 3D Model"
-        openPanel.canChooseDirectories = false
-        openPanel.allowsMultipleSelection = false
-        openPanel.allowedFileTypes = ["obj", "abc", "ply", "stl"]
-        
-        openPanel.begin { (result: Int) in
-            if (result == NSFileHandlingPanelOKButton) {
-                let fileURL = openPanel.url!
-                self.loadModel(fromFile: fileURL)
-            }
-        }
+    func selectMesh(_ mesh: Mesh) {
+        notificationCenter.post(name: Notification.Name(rawValue: "meshSelectionChanged"), object: nil, userInfo: ["selectedMesh":mesh])
     }
     
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
@@ -176,6 +176,11 @@
                                         <menuItem title="Select All" keyEquivalent="a" id="Ruw-6m-B2m">
                                             <connections>
                                                 <action selector="selectAll:" target="Ady-hI-5gd" id="VNm-Mi-diN"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Deselect All" keyEquivalent="A" id="Yw0-x5-Hyu">
+                                            <connections>
+                                                <action selector="deselectAll:" target="Ady-hI-5gd" id="cKG-2a-8Yb"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="uyl-h8-XO2"/>
@@ -609,6 +614,13 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="hB3-LF-h0Y"/>
+                                        <menuItem title="Toggle Inspector" keyEquivalent="i" id="NUT-He-g5i">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="toggleInspectorWithSender:" target="Ady-hI-5gd" id="pzW-Xa-HjG"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="OVJ-Sr-rmK"/>
                                         <menuItem title="Show Sidebar" keyEquivalent="s" id="kIP-vf-haE">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                             <connections>
@@ -675,7 +687,7 @@
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
+                <windowController storyboardIdentifier="Document Window Controller" id="B8D-0N-5wS" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -683,12 +695,110 @@
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                     </window>
                     <connections>
-                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
+                        <segue destination="46V-GK-pSU" kind="relationship" relationship="window.shadowedContentViewController" id="tYG-6N-wqv"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="75" y="250"/>
+        </scene>
+        <!--Visualiser Split View Controller-->
+        <scene sceneID="AuJ-zO-3oC">
+            <objects>
+                <splitViewController id="46V-GK-pSU" customClass="VisualiserSplitViewController" customModule="Visualiser" customModuleProvider="target" sceneMemberID="viewController">
+                    <splitViewItems>
+                        <splitViewItem id="WjS-wg-Kox"/>
+                        <splitViewItem id="S8Z-KW-Xzf"/>
+                    </splitViewItems>
+                    <splitView key="splitView" dividerStyle="thin" vertical="YES" id="TBr-VR-hWf">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </splitView>
+                    <connections>
+                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="splitItems" id="vaQ-U1-hl8"/>
+                        <segue destination="QOc-ym-PhO" kind="relationship" relationship="splitItems" id="Z8Q-e1-dbP"/>
+                    </connections>
+                </splitViewController>
+                <customObject id="AB4-xY-oxp" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="75" y="706"/>
+        </scene>
+        <!--No Selection-->
+        <scene sceneID="WlN-iy-fns">
+            <objects>
+                <viewController title="No Selection" id="fb8-Ot-UVV" sceneMemberID="viewController">
+                    <view key="view" id="3cw-vW-hLn">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zzl-Qy-GYi">
+                                <rect key="frame" x="79" y="141" width="82" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="No Selection" id="N7e-wJ-NDQ">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="zzl-Qy-GYi" firstAttribute="centerX" secondItem="3cw-vW-hLn" secondAttribute="centerX" id="LW6-WP-nkH"/>
+                            <constraint firstItem="zzl-Qy-GYi" firstAttribute="centerY" secondItem="3cw-vW-hLn" secondAttribute="centerY" id="MkP-Kj-maU"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="DnB-BV-OTC" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1015" y="989"/>
+        </scene>
+        <!--Inspector View Controller-->
+        <scene sceneID="Ncx-Us-0Vq">
+            <objects>
+                <tabViewController selectedTabViewItemIndex="0" tabStyle="unspecified" id="QOc-ym-PhO" customClass="InspectorViewController" customModule="Visualiser" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabViewItems>
+                        <tabViewItem label="No Selection" identifier="NoSelectionInspectorID" id="i1m-ln-h8E"/>
+                        <tabViewItem label="Mesh" identifier="MeshInspectorID" id="gnU-7P-fY2"/>
+                    </tabViewItems>
+                    <tabView key="tabView" type="noTabsNoBorder" id="wJe-wu-qUi">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <font key="font" metaFont="message"/>
+                        <tabViewItems/>
+                    </tabView>
+                    <connections>
+                        <segue destination="fb8-Ot-UVV" kind="relationship" relationship="tabItems" id="aQP-yC-yip"/>
+                        <segue destination="30g-3p-tSo" kind="relationship" relationship="tabItems" id="FB7-9v-JFi"/>
+                    </connections>
+                </tabViewController>
+                <customObject id="d0G-zz-K7A" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="385" y="1185"/>
+        </scene>
+        <!--Mesh-->
+        <scene sceneID="2ME-dB-tjg">
+            <objects>
+                <viewController title="Mesh" id="30g-3p-tSo" sceneMemberID="viewController">
+                    <view key="view" id="cpU-X2-elI">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ThR-Gy-xHq">
+                                <rect key="frame" x="73" y="141" width="94" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Mesh Selected" id="uXv-3e-j8m">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="ThR-Gy-xHq" firstAttribute="centerX" secondItem="cpU-X2-elI" secondAttribute="centerX" id="GjO-7C-xmA"/>
+                            <constraint firstItem="ThR-Gy-xHq" firstAttribute="centerY" secondItem="cpU-X2-elI" secondAttribute="centerY" id="MGV-sA-MAW"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="Pdd-DG-TQi" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1015" y="1389"/>
         </scene>
         <!--Metal View Controller-->
         <scene sceneID="hIz-AP-VOD">
@@ -701,7 +811,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="-221" y="1185"/>
         </scene>
     </scenes>
 </document>
