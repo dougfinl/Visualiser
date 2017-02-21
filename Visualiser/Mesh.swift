@@ -14,6 +14,28 @@ class Mesh {
     
     private var submeshes: [Submesh] = []
     
+    var modelMatrix: float4x4 = identity()
+    
+    var name: String
+    
+    var position: float3 = [0.0, 0.0, 0.0] {
+        didSet {
+            updateModelMatrix()
+        }
+    }
+    
+    var rotation: float3 = [0.0, 0.0, 0.0] {
+        didSet {
+            updateModelMatrix()
+        }
+    }
+    
+    var mscale: Float = 1.0 {
+        didSet {
+            updateModelMatrix()
+        }
+    }
+
     var boundingBox: MDLAxisAlignedBoundingBox!
     
     init(mtkMesh: MTKMesh, mdlMesh: MDLMesh, device: MTLDevice) {
@@ -24,6 +46,8 @@ class Mesh {
         mdlMesh.makeVerticesUnique()
         boundingBox = mdlMesh.boundingBox
         
+        name = mtkMesh.name
+        
         for i in 0..<mtkMesh.submeshes.count {
             let m = Submesh(mtkSubmesh: mtkMesh.submeshes[i],
                             mdlSubmesh: mdlMesh.submeshes![i] as! MDLSubmesh,
@@ -31,6 +55,12 @@ class Mesh {
             
             submeshes.append(m)
         }
+        
+        updateModelMatrix()
+    }
+    
+    func updateModelMatrix() {
+        modelMatrix = translate(x: position.x, y: position.y, z: position.z) * rotate(xyz: rotation) * scale(x: mscale, y: mscale, z: mscale)
     }
     
     func render(encoder: MTLRenderCommandEncoder) {

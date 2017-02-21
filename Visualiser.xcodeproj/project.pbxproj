@@ -20,6 +20,7 @@
 		CAB0D8ED1E567B49006C3CAC /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D8EC1E567B49006C3CAC /* Stage.swift */; };
 		CAB0D90C1E5686A5006C3CAC /* VisualiserSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D90B1E5686A5006C3CAC /* VisualiserSplitViewController.swift */; };
 		CAB0D90E1E57D110006C3CAC /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D90D1E57D110006C3CAC /* InspectorViewController.swift */; };
+		CAB0D9101E5880FB006C3CAC /* MeshInspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D90F1E5880FA006C3CAC /* MeshInspectorViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		CAB0D8EC1E567B49006C3CAC /* Stage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		CAB0D90B1E5686A5006C3CAC /* VisualiserSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualiserSplitViewController.swift; sourceTree = "<group>"; };
 		CAB0D90D1E57D110006C3CAC /* InspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorViewController.swift; sourceTree = "<group>"; };
+		CAB0D90F1E5880FA006C3CAC /* MeshInspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeshInspectorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				CA307FE31E1567F900D6C0D6 /* AppDelegate.swift */,
 				CA307FE71E1567F900D6C0D6 /* Assets.xcassets */,
 				CA307FE91E1567F900D6C0D6 /* Main.storyboard */,
+				CAB0D90F1E5880FA006C3CAC /* MeshInspectorViewController.swift */,
 				CA6161911E25ACA2000E7C80 /* MetalViewController.swift */,
 				CA6161941E25B6CD000E7C80 /* ShaderTypes.swift */,
 				CA3080661E1D2E0E00D6C0D6 /* Utils.swift */,
@@ -161,6 +164,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA6161951E25B6CD000E7C80 /* ShaderTypes.swift in Sources */,
+				CAB0D9101E5880FB006C3CAC /* MeshInspectorViewController.swift in Sources */,
 				CA703F8D1E22B92C00D824BF /* Mesh.swift in Sources */,
 				CA3080651E16839200D6C0D6 /* Shaders.metal in Sources */,
 				CAB0D8ED1E567B49006C3CAC /* Stage.swift in Sources */,

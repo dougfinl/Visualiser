@@ -38,6 +38,7 @@ class InspectorViewController: NSTabViewController {
     func prepareInspector(mesh: Mesh) {
         let index = tabView.indexOfTabViewItem(withIdentifier: "MeshInspectorID")
         tabView.selectTabViewItem(at: index)
+        (childViewControllers[index] as! MeshInspectorViewController).mesh = mesh
     }
     
 }
