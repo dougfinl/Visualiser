@@ -23,6 +23,7 @@ enum BufferIndex: Int {
     case MeshVertexBuffer = 0
     case FrameUniformBuffer
     case MaterialUniformBuffer
+    case ModelUniformBuffer
 }
 
 let MaxInflightBuffers = 3

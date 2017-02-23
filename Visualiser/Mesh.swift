@@ -14,9 +14,10 @@ class Mesh {
     
     private var submeshes: [Submesh] = []
     
-    var modelMatrix: float4x4 = identity()
-    
     var name: String
+    
+    var modelUniforms = ModelUniforms()
+    var modelUniformBuffer: MTLBuffer! = nil
     
     var position: float3 = [0.0, 0.0, 0.0] {
         didSet {
@@ -56,21 +57,26 @@ class Mesh {
             submeshes.append(m)
         }
         
+        modelUniformBuffer = device.makeBuffer(length: MemoryLayout<ModelUniforms>.size, options: [])
+        
         updateModelMatrix()
     }
     
     func updateModelMatrix() {
-        modelMatrix = translate(x: position.x, y: position.y, z: position.z) * rotate(xyz: rotation) * scale(x: mscale, y: mscale, z: mscale)
+        modelUniforms.modelMatrix = translate(x: position.x, y: position.y, z: position.z) * rotate(xyz: rotation) * scale(x: mscale, y: mscale, z: mscale)
     }
     
     func render(encoder: MTLRenderCommandEncoder) {
-        var bufferIndex = 0
+        let pModelUniformBuffer = modelUniformBuffer.contents()
+        memcpy(pModelUniformBuffer, &modelUniforms, MemoryLayout<ModelUniforms>.size)
         
+        encoder.setVertexBuffer(modelUniformBuffer, offset: 0, at: BufferIndex.ModelUniformBuffer.rawValue)
+        
+        var bufferIndex = 0
         for vertexBuffer in mesh.vertexBuffers {
             encoder.setVertexBuffer(vertexBuffer.buffer, offset: vertexBuffer.offset, at: bufferIndex)
+            bufferIndex += 1
         }
-        
-        bufferIndex += 1
         
         for submesh in submeshes {
             submesh.render(encoder: encoder)

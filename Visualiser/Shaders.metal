@@ -24,7 +24,8 @@ enum TextureIndex {
 enum BufferIndex {
     MeshVertexBuffer      = 0,
     FrameUniformBuffer    = 1,
-    MaterialUniformBuffer = 2
+    MaterialUniformBuffer = 2,
+    ModelUniformBuffer    = 3
 };
     
 
@@ -32,6 +33,11 @@ enum BufferIndex {
 struct FrameUniforms {
     float4x4 viewMatrix;
     float4x4 projectionMatrix;
+};
+
+struct ModelUniforms {
+    float4x4 modelMatrix;
+    float4x4 normalMatrix;
 };
 
 struct MaterialUniforms {
@@ -63,12 +69,13 @@ constexpr sampler s(coord::normalized,
 
 vertex VertexOut simpleSceneVertex(VertexIn current [[stage_in]],
                                    constant FrameUniforms *frameUniforms [[buffer(FrameUniformBuffer)]],
-                                   constant MaterialUniforms *materialUniforms [[buffer(MaterialUniformBuffer)]]) {
+                                   constant MaterialUniforms *materialUniforms [[buffer(MaterialUniformBuffer)]],
+                                   constant ModelUniforms *modelUniforms [[buffer(ModelUniformBuffer)]]) {
     VertexOut vertexOut;
     
     float4x4 viewProjection = frameUniforms->projectionMatrix * frameUniforms->viewMatrix;
     
-    vertexOut.position = viewProjection * current.position;
+    vertexOut.position = viewProjection * modelUniforms->modelMatrix * current.position;
 //    vertexOut.color = half4(1.0f, 1.0f, 1.0f, 1.0f);
     vertexOut.texCoord = current.texCoord;
     

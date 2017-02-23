@@ -13,6 +13,11 @@ struct FrameUniforms {
     var projectionMatrix: float4x4
 }
 
+struct ModelUniforms {
+    var modelMatrix: float4x4   = identity()
+    var normalMatrix: float4x4  = identity()
+}
+
 struct MaterialUniforms {
     var diffuseColor: float4      = [0.0, 0.0, 0.0, 1.0]
     var specularColor: float4     = [0.0, 0.0, 0.0, 1.0]
