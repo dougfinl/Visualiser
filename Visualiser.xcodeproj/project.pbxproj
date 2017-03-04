@@ -80,27 +80,51 @@
 		CA307FE21E1567F900D6C0D6 /* Visualiser */ = {
 			isa = PBXGroup;
 			children = (
-				CA821B531E699A9500BA26B2 /* SidebarViewController.swift */,
+				CA8409E71E6A557200459F6D /* Models */,
+				CA8409E51E6A542400459F6D /* Shaders */,
+				CA8409E41E6A53E400459F6D /* Controllers */,
 				CA307FE31E1567F900D6C0D6 /* AppDelegate.swift */,
 				CA307FE71E1567F900D6C0D6 /* Assets.xcassets */,
 				CA307FE91E1567F900D6C0D6 /* Main.storyboard */,
 				CA8409E11E6A4BD100459F6D /* NoNameStringValueTransformer.swift */,
-				CA4314301E6A0C9500BE3E90 /* VisualiserWindowController.swift */,
-				CA821B4F1E69998800BA26B2 /* OutlinerViewController.swift */,
-				CA821B551E69E12E00BA26B2 /* Stage.swift */,
-				CAB0D90F1E5880FA006C3CAC /* MeshInspectorViewController.swift */,
-				CA6161911E25ACA2000E7C80 /* MetalViewController.swift */,
 				CA6161941E25B6CD000E7C80 /* ShaderTypes.swift */,
 				CA3080661E1D2E0E00D6C0D6 /* Utils.swift */,
 				CA307FEC1E1567F900D6C0D6 /* Info.plist */,
-				CAB0D8EC1E567B49006C3CAC /* Show.swift */,
+			);
+			path = Visualiser;
+			sourceTree = "<group>";
+		};
+		CA8409E41E6A53E400459F6D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CA821B531E699A9500BA26B2 /* SidebarViewController.swift */,
+				CA4314301E6A0C9500BE3E90 /* VisualiserWindowController.swift */,
+				CA821B4F1E69998800BA26B2 /* OutlinerViewController.swift */,
+				CAB0D90F1E5880FA006C3CAC /* MeshInspectorViewController.swift */,
+				CA6161911E25ACA2000E7C80 /* MetalViewController.swift */,
+				CAB0D90B1E5686A5006C3CAC /* VisualiserViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		CA8409E51E6A542400459F6D /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
 				CA3080641E16839200D6C0D6 /* Shaders.metal */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
+		CA8409E71E6A557200459F6D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CA821B551E69E12E00BA26B2 /* Stage.swift */,
+				CAB0D8EC1E567B49006C3CAC /* Show.swift */,
 				CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */,
 				CA703F8C1E22B92C00D824BF /* Mesh.swift */,
 				CA703F8E1E22BAA600D824BF /* Submesh.swift */,
-				CAB0D90B1E5686A5006C3CAC /* VisualiserViewController.swift */,
 			);
-			path = Visualiser;
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
