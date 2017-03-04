@@ -12,14 +12,18 @@
 		CA307FEB1E1567F900D6C0D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA307FE91E1567F900D6C0D6 /* Main.storyboard */; };
 		CA3080651E16839200D6C0D6 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = CA3080641E16839200D6C0D6 /* Shaders.metal */; };
 		CA3080671E1D2E0E00D6C0D6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3080661E1D2E0E00D6C0D6 /* Utils.swift */; };
+		CA4314311E6A0C9500BE3E90 /* VisualiserWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4314301E6A0C9500BE3E90 /* VisualiserWindowController.swift */; };
 		CA6161921E25ACA2000E7C80 /* MetalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6161911E25ACA2000E7C80 /* MetalViewController.swift */; };
 		CA6161951E25B6CD000E7C80 /* ShaderTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6161941E25B6CD000E7C80 /* ShaderTypes.swift */; };
 		CA703F8D1E22B92C00D824BF /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA703F8C1E22B92C00D824BF /* Mesh.swift */; };
 		CA703F8F1E22BAA600D824BF /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA703F8E1E22BAA600D824BF /* Submesh.swift */; };
+		CA821B501E69998800BA26B2 /* OutlinerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA821B4F1E69998800BA26B2 /* OutlinerViewController.swift */; };
+		CA821B541E699A9500BA26B2 /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA821B531E699A9500BA26B2 /* SidebarViewController.swift */; };
+		CA821B561E69E12E00BA26B2 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA821B551E69E12E00BA26B2 /* Stage.swift */; };
+		CA8409E21E6A4BD100459F6D /* NoNameStringValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8409E11E6A4BD100459F6D /* NoNameStringValueTransformer.swift */; };
 		CA9D8D641E1E56DE00FBD5F3 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */; };
-		CAB0D8ED1E567B49006C3CAC /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D8EC1E567B49006C3CAC /* Stage.swift */; };
-		CAB0D90C1E5686A5006C3CAC /* VisualiserSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D90B1E5686A5006C3CAC /* VisualiserSplitViewController.swift */; };
-		CAB0D90E1E57D110006C3CAC /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D90D1E57D110006C3CAC /* InspectorViewController.swift */; };
+		CAB0D8ED1E567B49006C3CAC /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D8EC1E567B49006C3CAC /* Show.swift */; };
+		CAB0D90C1E5686A5006C3CAC /* VisualiserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D90B1E5686A5006C3CAC /* VisualiserViewController.swift */; };
 		CAB0D9101E5880FB006C3CAC /* MeshInspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D90F1E5880FA006C3CAC /* MeshInspectorViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,14 +35,18 @@
 		CA307FEC1E1567F900D6C0D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA3080641E16839200D6C0D6 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		CA3080661E1D2E0E00D6C0D6 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		CA4314301E6A0C9500BE3E90 /* VisualiserWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualiserWindowController.swift; sourceTree = "<group>"; };
 		CA6161911E25ACA2000E7C80 /* MetalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalViewController.swift; sourceTree = "<group>"; };
 		CA6161941E25B6CD000E7C80 /* ShaderTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShaderTypes.swift; sourceTree = "<group>"; };
 		CA703F8C1E22B92C00D824BF /* Mesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		CA703F8E1E22BAA600D824BF /* Submesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Submesh.swift; sourceTree = "<group>"; };
+		CA821B4F1E69998800BA26B2 /* OutlinerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlinerViewController.swift; sourceTree = "<group>"; };
+		CA821B531E699A9500BA26B2 /* SidebarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarViewController.swift; sourceTree = "<group>"; };
+		CA821B551E69E12E00BA26B2 /* Stage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
+		CA8409E11E6A4BD100459F6D /* NoNameStringValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoNameStringValueTransformer.swift; sourceTree = "<group>"; };
 		CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
-		CAB0D8EC1E567B49006C3CAC /* Stage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
-		CAB0D90B1E5686A5006C3CAC /* VisualiserSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualiserSplitViewController.swift; sourceTree = "<group>"; };
-		CAB0D90D1E57D110006C3CAC /* InspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorViewController.swift; sourceTree = "<group>"; };
+		CAB0D8EC1E567B49006C3CAC /* Show.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
+		CAB0D90B1E5686A5006C3CAC /* VisualiserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualiserViewController.swift; sourceTree = "<group>"; };
 		CAB0D90F1E5880FA006C3CAC /* MeshInspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeshInspectorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,21 +80,25 @@
 		CA307FE21E1567F900D6C0D6 /* Visualiser */ = {
 			isa = PBXGroup;
 			children = (
+				CA821B531E699A9500BA26B2 /* SidebarViewController.swift */,
 				CA307FE31E1567F900D6C0D6 /* AppDelegate.swift */,
 				CA307FE71E1567F900D6C0D6 /* Assets.xcassets */,
 				CA307FE91E1567F900D6C0D6 /* Main.storyboard */,
+				CA8409E11E6A4BD100459F6D /* NoNameStringValueTransformer.swift */,
+				CA4314301E6A0C9500BE3E90 /* VisualiserWindowController.swift */,
+				CA821B4F1E69998800BA26B2 /* OutlinerViewController.swift */,
+				CA821B551E69E12E00BA26B2 /* Stage.swift */,
 				CAB0D90F1E5880FA006C3CAC /* MeshInspectorViewController.swift */,
 				CA6161911E25ACA2000E7C80 /* MetalViewController.swift */,
 				CA6161941E25B6CD000E7C80 /* ShaderTypes.swift */,
 				CA3080661E1D2E0E00D6C0D6 /* Utils.swift */,
 				CA307FEC1E1567F900D6C0D6 /* Info.plist */,
-				CAB0D8EC1E567B49006C3CAC /* Stage.swift */,
+				CAB0D8EC1E567B49006C3CAC /* Show.swift */,
 				CA3080641E16839200D6C0D6 /* Shaders.metal */,
 				CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */,
 				CA703F8C1E22B92C00D824BF /* Mesh.swift */,
 				CA703F8E1E22BAA600D824BF /* Submesh.swift */,
-				CAB0D90B1E5686A5006C3CAC /* VisualiserSplitViewController.swift */,
-				CAB0D90D1E57D110006C3CAC /* InspectorViewController.swift */,
+				CAB0D90B1E5686A5006C3CAC /* VisualiserViewController.swift */,
 			);
 			path = Visualiser;
 			sourceTree = "<group>";
@@ -167,14 +179,18 @@
 				CAB0D9101E5880FB006C3CAC /* MeshInspectorViewController.swift in Sources */,
 				CA703F8D1E22B92C00D824BF /* Mesh.swift in Sources */,
 				CA3080651E16839200D6C0D6 /* Shaders.metal in Sources */,
-				CAB0D8ED1E567B49006C3CAC /* Stage.swift in Sources */,
+				CAB0D8ED1E567B49006C3CAC /* Show.swift in Sources */,
+				CA8409E21E6A4BD100459F6D /* NoNameStringValueTransformer.swift in Sources */,
 				CA9D8D641E1E56DE00FBD5F3 /* Camera.swift in Sources */,
 				CA307FE41E1567F900D6C0D6 /* AppDelegate.swift in Sources */,
 				CA703F8F1E22BAA600D824BF /* Submesh.swift in Sources */,
+				CA821B501E69998800BA26B2 /* OutlinerViewController.swift in Sources */,
+				CA821B561E69E12E00BA26B2 /* Stage.swift in Sources */,
 				CA6161921E25ACA2000E7C80 /* MetalViewController.swift in Sources */,
-				CAB0D90C1E5686A5006C3CAC /* VisualiserSplitViewController.swift in Sources */,
+				CAB0D90C1E5686A5006C3CAC /* VisualiserViewController.swift in Sources */,
+				CA4314311E6A0C9500BE3E90 /* VisualiserWindowController.swift in Sources */,
 				CA3080671E1D2E0E00D6C0D6 /* Utils.swift in Sources */,
-				CAB0D90E1E57D110006C3CAC /* InspectorViewController.swift in Sources */,
+				CA821B541E699A9500BA26B2 /* SidebarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

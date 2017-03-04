@@ -687,7 +687,7 @@
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController storyboardIdentifier="Document Window Controller" id="B8D-0N-5wS" sceneMemberID="viewController">
+                <windowController storyboardIdentifier="Document Window Controller" id="B8D-0N-5wS" customClass="VisualiserWindowController" customModule="Visualiser" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -702,81 +702,131 @@
             </objects>
             <point key="canvasLocation" x="75" y="250"/>
         </scene>
-        <!--Visualiser Split View Controller-->
+        <!--Visualiser View Controller-->
         <scene sceneID="AuJ-zO-3oC">
             <objects>
-                <splitViewController id="46V-GK-pSU" customClass="VisualiserSplitViewController" customModule="Visualiser" customModuleProvider="target" sceneMemberID="viewController">
+                <splitViewController id="46V-GK-pSU" customClass="VisualiserViewController" customModule="Visualiser" customModuleProvider="target" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem id="WjS-wg-Kox"/>
-                        <splitViewItem id="S8Z-KW-Xzf"/>
+                        <splitViewItem id="d2k-ac-aOj"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" vertical="YES" id="TBr-VR-hWf">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </splitView>
                     <connections>
+                        <outlet property="meshesArrayController" destination="HiT-r0-7me" id="aGR-3W-gtN"/>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="splitItems" id="vaQ-U1-hl8"/>
-                        <segue destination="QOc-ym-PhO" kind="relationship" relationship="splitItems" id="Z8Q-e1-dbP"/>
+                        <segue destination="BPl-PH-TjS" kind="relationship" relationship="splitItems" id="b6i-tV-rQf"/>
                     </connections>
                 </splitViewController>
                 <customObject id="AB4-xY-oxp" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <arrayController id="HiT-r0-7me">
+                    <connections>
+                        <binding destination="46V-GK-pSU" name="contentArray" keyPath="self.representedObject.stage.meshes" id="BVI-DI-9bp"/>
+                        <binding destination="46V-GK-pSU" name="selectionIndexes" keyPath="self.representedObject.stage.selectionIndexes" id="n1h-cb-ikp"/>
+                    </connections>
+                </arrayController>
             </objects>
             <point key="canvasLocation" x="75" y="706"/>
         </scene>
-        <!--No Selection-->
-        <scene sceneID="WlN-iy-fns">
+        <!--Outliner View Controller-->
+        <scene sceneID="bL4-H9-A6b">
             <objects>
-                <viewController title="No Selection" id="fb8-Ot-UVV" sceneMemberID="viewController">
-                    <view key="view" id="3cw-vW-hLn">
+                <viewController id="mmF-gC-MD3" customClass="OutlinerViewController" customModule="Visualiser" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="b6g-eU-j8W">
                         <rect key="frame" x="0.0" y="0.0" width="240" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zzl-Qy-GYi">
-                                <rect key="frame" x="79" y="141" width="82" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="No Selection" id="N7e-wJ-NDQ">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5I-th-AYC">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="300"/>
+                                <clipView key="contentView" id="jzY-to-FAB">
+                                    <rect key="frame" x="1" y="1" width="238" height="298"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" id="OAf-vm-lZu">
+                                            <rect key="frame" x="0.0" y="0.0" width="238" height="298"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <size key="intercellSpacing" width="3" height="2"/>
+                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                            <tableColumns>
+                                                <tableColumn width="235" minWidth="40" maxWidth="1000" id="SUY-WY-4tr">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Mesh Name">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="vi4-3p-6ax">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                    <connections>
+                                                        <binding destination="Mxf-5V-jeT" name="value" keyPath="arrangedObjects.name" id="Ddu-7b-mRq"/>
+                                                    </connections>
+                                                </tableColumn>
+                                            </tableColumns>
+                                        </tableView>
+                                    </subviews>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="YVK-m1-Aqv">
+                                    <rect key="frame" x="1" y="283" width="238" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="HW8-UA-huQ">
+                                    <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="zzl-Qy-GYi" firstAttribute="centerX" secondItem="3cw-vW-hLn" secondAttribute="centerX" id="LW6-WP-nkH"/>
-                            <constraint firstItem="zzl-Qy-GYi" firstAttribute="centerY" secondItem="3cw-vW-hLn" secondAttribute="centerY" id="MkP-Kj-maU"/>
+                            <constraint firstAttribute="trailing" secondItem="c5I-th-AYC" secondAttribute="trailing" id="9HY-vs-RV3"/>
+                            <constraint firstAttribute="bottom" secondItem="c5I-th-AYC" secondAttribute="bottom" id="ESK-RZ-sDR"/>
+                            <constraint firstItem="c5I-th-AYC" firstAttribute="leading" secondItem="b6g-eU-j8W" secondAttribute="leading" id="K3t-vk-nry"/>
+                            <constraint firstItem="c5I-th-AYC" firstAttribute="top" secondItem="b6g-eU-j8W" secondAttribute="top" id="cdO-vf-mzc"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="meshesArrayController" destination="Mxf-5V-jeT" id="zQr-Z8-44E"/>
+                    </connections>
                 </viewController>
-                <customObject id="DnB-BV-OTC" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customObject id="Bb5-v7-qdM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <arrayController id="Mxf-5V-jeT">
+                    <connections>
+                        <binding destination="mmF-gC-MD3" name="contentArray" keyPath="self.representedObject.stage.meshes" id="b6M-LR-10K"/>
+                        <binding destination="mmF-gC-MD3" name="selectionIndexes" keyPath="self.representedObject.stage.selectionIndexes" id="lQD-Cu-nlr"/>
+                    </connections>
+                </arrayController>
             </objects>
-            <point key="canvasLocation" x="1015" y="989"/>
+            <point key="canvasLocation" x="847" y="971"/>
         </scene>
-        <!--Inspector View Controller-->
-        <scene sceneID="Ncx-Us-0Vq">
+        <!--Sidebar View Controller-->
+        <scene sceneID="1j7-8j-8iX">
             <objects>
-                <tabViewController selectedTabViewItemIndex="0" tabStyle="unspecified" id="QOc-ym-PhO" customClass="InspectorViewController" customModule="Visualiser" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabViewItems>
-                        <tabViewItem label="No Selection" identifier="NoSelectionInspectorID" id="i1m-ln-h8E"/>
-                        <tabViewItem label="Mesh" identifier="MeshInspectorID" id="gnU-7P-fY2"/>
-                    </tabViewItems>
-                    <tabView key="tabView" type="noTabsNoBorder" id="wJe-wu-qUi">
+                <splitViewController id="BPl-PH-TjS" customClass="SidebarViewController" customModule="Visualiser" customModuleProvider="target" sceneMemberID="viewController">
+                    <splitViewItems>
+                        <splitViewItem id="0qP-Tn-C2B"/>
+                        <splitViewItem id="987-45-zg8"/>
+                    </splitViewItems>
+                    <splitView key="splitView" dividerStyle="thin" id="LEo-Xr-FUC">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <font key="font" metaFont="message"/>
-                        <tabViewItems/>
-                    </tabView>
+                    </splitView>
                     <connections>
-                        <segue destination="fb8-Ot-UVV" kind="relationship" relationship="tabItems" id="aQP-yC-yip"/>
-                        <segue destination="30g-3p-tSo" kind="relationship" relationship="tabItems" id="FB7-9v-JFi"/>
+                        <segue destination="mmF-gC-MD3" kind="relationship" relationship="splitItems" id="5Ob-77-Tgc"/>
+                        <segue destination="30g-3p-tSo" kind="relationship" relationship="splitItems" id="heZ-zF-R7s"/>
                     </connections>
-                </tabViewController>
-                <customObject id="d0G-zz-K7A" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                </splitViewController>
+                <customObject id="D6D-nL-LTv" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="385" y="1185"/>
+            <point key="canvasLocation" x="348" y="1200"/>
         </scene>
-        <!--Mesh-->
+        <!--Mesh Inspector View Controller-->
         <scene sceneID="2ME-dB-tjg">
             <objects>
-                <viewController title="Mesh" id="30g-3p-tSo" customClass="MeshInspectorViewController" customModule="Visualiser" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="30g-3p-tSo" customClass="MeshInspectorViewController" customModule="Visualiser" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="cpU-X2-elI">
                         <rect key="frame" x="0.0" y="0.0" width="240" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -880,7 +930,14 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <outlet property="delegate" destination="30g-3p-tSo" id="qCq-F1-An3"/>
+                                    <binding destination="xlU-kz-BTS" name="value" keyPath="selection.name" id="Qm3-4r-YOM">
+                                        <dictionary key="options">
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            <string key="NSMultipleValuesPlaceholder">multiple</string>
+                                            <string key="NSNoSelectionPlaceholder">no selection</string>
+                                            <string key="NSValueTransformerName">NoNameStringValueTransformer</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zf5-zu-P80">
@@ -892,7 +949,13 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <outlet property="delegate" destination="30g-3p-tSo" id="7h9-Au-yRs"/>
+                                    <binding destination="xlU-kz-BTS" name="value" keyPath="selection.positionX" id="Uwr-EO-QwC">
+                                        <dictionary key="options">
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            <string key="NSMultipleValuesPlaceholder">multiple</string>
+                                            <string key="NSNoSelectionPlaceholder">no selection</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lGs-jt-X1K">
@@ -904,7 +967,13 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <outlet property="delegate" destination="30g-3p-tSo" id="fsE-YX-KND"/>
+                                    <binding destination="xlU-kz-BTS" name="value" keyPath="selection.positionY" id="0Wb-zQ-hCx">
+                                        <dictionary key="options">
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            <string key="NSMultipleValuesPlaceholder">multiple</string>
+                                            <string key="NSNoSelectionPlaceholder">no selection</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8SR-5J-So3">
@@ -916,7 +985,13 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <outlet property="delegate" destination="30g-3p-tSo" id="6Co-1o-XI3"/>
+                                    <binding destination="xlU-kz-BTS" name="value" keyPath="selection.positionZ" id="jzk-q4-F2i">
+                                        <dictionary key="options">
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            <string key="NSMultipleValuesPlaceholder">multiple</string>
+                                            <string key="NSNoSelectionPlaceholder">no selection</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOq-KQ-GS7">
@@ -928,7 +1003,13 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <outlet property="delegate" destination="30g-3p-tSo" id="1dx-JU-jOW"/>
+                                    <binding destination="xlU-kz-BTS" name="value" keyPath="selection.rotationX" id="pVs-6G-QXh">
+                                        <dictionary key="options">
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            <string key="NSMultipleValuesPlaceholder">multiple</string>
+                                            <string key="NSNoSelectionPlaceholder">no selection</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hab-uX-TXy">
@@ -940,7 +1021,13 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <outlet property="delegate" destination="30g-3p-tSo" id="Kdp-Bq-4bx"/>
+                                    <binding destination="xlU-kz-BTS" name="value" keyPath="selection.rotationY" id="mFG-sC-BYZ">
+                                        <dictionary key="options">
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            <string key="NSMultipleValuesPlaceholder">multiple</string>
+                                            <string key="NSNoSelectionPlaceholder">no selection</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CH7-Px-TQZ">
@@ -952,7 +1039,13 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <outlet property="delegate" destination="30g-3p-tSo" id="y6O-bc-Edw"/>
+                                    <binding destination="xlU-kz-BTS" name="value" keyPath="selection.rotationZ" id="M7E-hi-hH7">
+                                        <dictionary key="options">
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            <string key="NSMultipleValuesPlaceholder">multiple</string>
+                                            <string key="NSNoSelectionPlaceholder">no selection</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EFG-JG-6he">
@@ -964,12 +1057,19 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <outlet property="delegate" destination="30g-3p-tSo" id="Cfg-je-d8y"/>
+                                    <binding destination="xlU-kz-BTS" name="value" keyPath="selection.mscale" id="ZEr-Nh-U8s">
+                                        <dictionary key="options">
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            <string key="NSMultipleValuesPlaceholder">multiple</string>
+                                            <string key="NSNoSelectionPlaceholder">no selection</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                         </subviews>
                     </view>
                     <connections>
+                        <outlet property="meshArrayController" destination="xlU-kz-BTS" id="dv2-hz-WyS"/>
                         <outlet property="txtName" destination="LQ6-GK-b7M" id="b4R-7K-2rR"/>
                         <outlet property="txtPositionX" destination="zf5-zu-P80" id="taM-KU-UEI"/>
                         <outlet property="txtPositionY" destination="lGs-jt-X1K" id="JKC-1j-Ze6"/>
@@ -981,8 +1081,14 @@
                     </connections>
                 </viewController>
                 <customObject id="Pdd-DG-TQi" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <arrayController id="xlU-kz-BTS">
+                    <connections>
+                        <binding destination="30g-3p-tSo" name="contentArray" keyPath="self.representedObject.stage.meshes" id="F92-vW-lgF"/>
+                        <binding destination="30g-3p-tSo" name="selectionIndexes" keyPath="self.representedObject.stage.selectionIndexes" id="Bd4-DD-e4N"/>
+                    </connections>
+                </arrayController>
             </objects>
-            <point key="canvasLocation" x="1015" y="1389"/>
+            <point key="canvasLocation" x="847" y="1417"/>
         </scene>
         <!--Metal View Controller-->
         <scene sceneID="hIz-AP-VOD">
@@ -992,8 +1098,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </view>
+                    <connections>
+                        <outlet property="meshesArrayController" destination="HKp-PQ-b9Q" id="Ez1-zx-0ug"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <arrayController id="HKp-PQ-b9Q">
+                    <connections>
+                        <binding destination="XfG-lQ-9wD" name="contentArray" keyPath="self.representedObject.stage.meshes" id="Aaa-JB-40u"/>
+                        <binding destination="XfG-lQ-9wD" name="selectionIndexes" keyPath="self.representedObject.stage.selectionIndexes" id="RA5-TF-xS4"/>
+                    </connections>
+                </arrayController>
             </objects>
             <point key="canvasLocation" x="-221" y="1185"/>
         </scene>

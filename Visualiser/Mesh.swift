@@ -8,7 +8,7 @@
 
 import MetalKit
 
-class Mesh {
+class Mesh: NSObject {
     
     private var mesh: MTKMesh
     
@@ -19,13 +19,33 @@ class Mesh {
     var modelUniforms = ModelUniforms()
     var modelUniformBuffer: MTLBuffer! = nil
     
-    var position: float3 = [0.0, 0.0, 0.0] {
+    var positionX: Float = 0.0 {
+        didSet {
+            updateModelMatrix()
+        }
+    }
+    var positionY: Float = 0.0 {
+        didSet {
+            updateModelMatrix()
+        }
+    }
+    var positionZ: Float = 0.0 {
         didSet {
             updateModelMatrix()
         }
     }
     
-    var rotation: float3 = [0.0, 0.0, 0.0] {
+    var rotationX: Float = 0.0 {
+        didSet {
+            updateModelMatrix()
+        }
+    }
+    var rotationY: Float = 0.0 {
+        didSet {
+            updateModelMatrix()
+        }
+    }
+    var rotationZ: Float = 0.0 {
         didSet {
             updateModelMatrix()
         }
@@ -36,7 +56,7 @@ class Mesh {
             updateModelMatrix()
         }
     }
-
+    
     var boundingBox: MDLAxisAlignedBoundingBox!
     
     init(mtkMesh: MTKMesh, mdlMesh: MDLMesh, device: MTLDevice) {
@@ -58,12 +78,15 @@ class Mesh {
         }
         
         modelUniformBuffer = device.makeBuffer(length: MemoryLayout<ModelUniforms>.size, options: [])
+    
+        super.init()
         
         updateModelMatrix()
     }
     
     func updateModelMatrix() {
-        modelUniforms.modelMatrix = translate(x: position.x, y: position.y, z: position.z) * rotate(xyz: rotation) * scale(x: mscale, y: mscale, z: mscale)
+        
+        modelUniforms.modelMatrix = translate(x: positionX, y: positionY, z: positionZ) * rotate(x: radians(fromDegrees: rotationX), y: radians(fromDegrees: rotationY), z: radians(fromDegrees: rotationZ)) * scale(x: mscale, y: mscale, z: mscale)
     }
     
     func render(encoder: MTLRenderCommandEncoder) {

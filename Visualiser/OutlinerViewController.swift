@@ -1,5 +1,5 @@
 //
-//  Stage.swift
+//  OutlinerViewController.swift
 //  Visualiser
 //
 //  Created by Douglas Finlay on 03/03/2017.
@@ -8,10 +8,8 @@
 
 import Cocoa
 
-class Stage: NSObject {
+class OutlinerViewController: NSViewController {
     
-    var meshes: [Mesh] = []
+    @IBOutlet var meshesArrayController: NSArrayController!
     
-    var selectionIndexes = NSIndexSet()
-
 }

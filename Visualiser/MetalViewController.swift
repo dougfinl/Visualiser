@@ -44,14 +44,13 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
     let inflightSemaphore = DispatchSemaphore(value: MaxInflightBuffers)
     var bufferIndex = 0
     
-    var meshes: [Mesh] = []
-    
     var camera: ArcballCamera! = nil
     
     var mtlVertexDescriptor: MTLVertexDescriptor! = nil
     
     let notificationCenter = NotificationCenter.default
     
+    @IBOutlet var meshesArrayController: NSArrayController!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -178,7 +177,7 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
             renderEncoder.setFrontFacing(.counterClockwise)
             renderEncoder.setCullMode(.back)
             
-            for mesh in meshes {
+            for mesh in meshesArrayController.arrangedObjects as! [Mesh] {
                 mesh.render(encoder: renderEncoder)
             }
             
@@ -213,7 +212,7 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         camera.update()
     }
     
-    func loadModel(fromFile fileURL: URL) {
+    func loadModel(fromFile fileURL: URL) -> [Mesh] {
         NSLog("importing \(fileURL)")
 
         let mdlVertexDescriptor = MTKModelIOVertexDescriptorFromMetal(mtlVertexDescriptor)
@@ -232,17 +231,18 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
             try mtkMeshes = MTKMesh.newMeshes(from: asset, device: device, sourceMeshes: &mdlMeshes)
         } catch let error {
             NSLog("error: failed to create mesh: \(error)")
-            return
+            return []
         }
         
         assert(mtkMeshes.count == mdlMeshes!.count, "mdlMesh and mtkMesh arrays differ in size")
         
+        var result: [Mesh] = []
         for (i, m) in mtkMeshes.enumerated() {
             let mesh = Mesh(mtkMesh: m, mdlMesh: mdlMeshes![i] as! MDLMesh, device: device)
-            self.meshes.append(mesh)
-            
-            selectMesh(mesh)
+            result.append(mesh)
         }
+        
+        return result
     }
     
     func selectMesh(_ mesh: Mesh) {

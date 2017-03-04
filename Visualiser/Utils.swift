@@ -73,8 +73,13 @@ func rotate(z: Float) -> float4x4 {
     return float4x4([X, Y, Z, W])
 }
 
+
+func rotate(x: Float, y: Float, z: Float) -> float4x4 {
+    return rotate(z: z) * rotate(y: y) * rotate(x: x)
+}
+
 func rotate(xyz: float3) -> float4x4 {
-    return rotate(z: xyz.z) * rotate(y: xyz.y) * rotate(x: xyz.x)
+    return rotate(x: xyz.x, y: xyz.y, z: xyz.z)
 }
 
 func lookAt(target: vector_float3, eye: vector_float3, up: vector_float3) -> float4x4 {

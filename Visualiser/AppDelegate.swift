@@ -12,7 +12,8 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-    }
+        ValueTransformer.setValueTransformer(NoNameStringValueTransformer(), forName: NSValueTransformerName(rawValue: "NoNameStringValueTransformer"))
+        }
 
     func applicationWillTerminate(_ aNotification: Notification) {
     }
