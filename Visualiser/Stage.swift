@@ -10,8 +10,8 @@ import Cocoa
 
 class Stage: NSObject {
     
-    var meshes: [Mesh] = []
+    var models: [Model] = []
     
-    var selectionIndexes = NSIndexSet()
+    var modelSelectionIndexes = NSIndexSet()
 
 }

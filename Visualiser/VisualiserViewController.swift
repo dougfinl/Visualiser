@@ -24,7 +24,7 @@ class VisualiserViewController: NSSplitViewController {
     
     var sidebarSplitViewItem: NSSplitViewItem! = nil
     
-    @IBOutlet var meshesArrayController: NSArrayController!
+    @IBOutlet var modelsArrayController: NSArrayController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,10 +46,12 @@ class VisualiserViewController: NSSplitViewController {
         openPanel.begin { (result: Int) in
             if (result == NSFileHandlingPanelOKButton) {
                 let fileURL = openPanel.url!
-                let loadedModels = self.metalViewController.loadModel(fromFile: fileURL)
                 
-                for m in loadedModels {
-                    self.meshesArrayController.addObject(m)
+                self.metalViewController.loadModel(fromURL: fileURL)
+                
+                // Show the sidebar
+                if self.sidebarSplitViewItem.isCollapsed {
+                    self.toggleInspector(sender: self)
                 }
             }
         }

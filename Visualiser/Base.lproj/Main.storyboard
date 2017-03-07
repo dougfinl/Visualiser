@@ -715,7 +715,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </splitView>
                     <connections>
-                        <outlet property="meshesArrayController" destination="HiT-r0-7me" id="aGR-3W-gtN"/>
+                        <outlet property="modelsArrayController" destination="HiT-r0-7me" id="emd-Zk-q6v"/>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="splitItems" id="vaQ-U1-hl8"/>
                         <segue destination="BPl-PH-TjS" kind="relationship" relationship="splitItems" id="b6i-tV-rQf"/>
                     </connections>
@@ -723,8 +723,8 @@
                 <customObject id="AB4-xY-oxp" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <arrayController id="HiT-r0-7me">
                     <connections>
-                        <binding destination="46V-GK-pSU" name="contentArray" keyPath="self.representedObject.stage.meshes" id="BVI-DI-9bp"/>
-                        <binding destination="46V-GK-pSU" name="selectionIndexes" keyPath="self.representedObject.stage.selectionIndexes" id="n1h-cb-ikp"/>
+                        <binding destination="46V-GK-pSU" name="selectionIndexes" keyPath="self.representedObject.stage.modelSelectionIndexes" id="kYi-nL-Nx5"/>
+                        <binding destination="46V-GK-pSU" name="contentArray" keyPath="self.representedObject.stage.models" id="2fV-Mf-tMj"/>
                     </connections>
                 </arrayController>
             </objects>
@@ -789,14 +789,14 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="meshesArrayController" destination="Mxf-5V-jeT" id="zQr-Z8-44E"/>
+                        <outlet property="modelsArrayController" destination="Mxf-5V-jeT" id="ooz-Eg-MRJ"/>
                     </connections>
                 </viewController>
                 <customObject id="Bb5-v7-qdM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <arrayController id="Mxf-5V-jeT">
                     <connections>
-                        <binding destination="mmF-gC-MD3" name="contentArray" keyPath="self.representedObject.stage.meshes" id="b6M-LR-10K"/>
-                        <binding destination="mmF-gC-MD3" name="selectionIndexes" keyPath="self.representedObject.stage.selectionIndexes" id="lQD-Cu-nlr"/>
+                        <binding destination="mmF-gC-MD3" name="selectionIndexes" keyPath="self.representedObject.stage.modelSelectionIndexes" id="y2N-wk-Xm4"/>
+                        <binding destination="mmF-gC-MD3" name="contentArray" keyPath="self.representedObject.stage.models" id="G7E-Ra-kGo"/>
                     </connections>
                 </arrayController>
             </objects>
@@ -1069,7 +1069,7 @@
                         </subviews>
                     </view>
                     <connections>
-                        <outlet property="meshArrayController" destination="xlU-kz-BTS" id="dv2-hz-WyS"/>
+                        <outlet property="meshArrayController" destination="xlU-kz-BTS" id="djN-d5-kQm"/>
                         <outlet property="txtName" destination="LQ6-GK-b7M" id="b4R-7K-2rR"/>
                         <outlet property="txtPositionX" destination="zf5-zu-P80" id="taM-KU-UEI"/>
                         <outlet property="txtPositionY" destination="lGs-jt-X1K" id="JKC-1j-Ze6"/>
@@ -1083,8 +1083,8 @@
                 <customObject id="Pdd-DG-TQi" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <arrayController id="xlU-kz-BTS">
                     <connections>
-                        <binding destination="30g-3p-tSo" name="contentArray" keyPath="self.representedObject.stage.meshes" id="F92-vW-lgF"/>
-                        <binding destination="30g-3p-tSo" name="selectionIndexes" keyPath="self.representedObject.stage.selectionIndexes" id="Bd4-DD-e4N"/>
+                        <binding destination="30g-3p-tSo" name="selectionIndexes" keyPath="self.representedObject.stage.modelSelectionIndexes" id="sSQ-Te-L8P"/>
+                        <binding destination="30g-3p-tSo" name="contentArray" keyPath="self.representedObject.stage.models" id="fZA-0e-CJG"/>
                     </connections>
                 </arrayController>
             </objects>
@@ -1099,14 +1099,14 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </view>
                     <connections>
-                        <outlet property="meshesArrayController" destination="HKp-PQ-b9Q" id="Ez1-zx-0ug"/>
+                        <outlet property="modelsArrayController" destination="HKp-PQ-b9Q" id="I78-sx-TXN"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <arrayController id="HKp-PQ-b9Q">
                     <connections>
-                        <binding destination="XfG-lQ-9wD" name="contentArray" keyPath="self.representedObject.stage.meshes" id="Aaa-JB-40u"/>
-                        <binding destination="XfG-lQ-9wD" name="selectionIndexes" keyPath="self.representedObject.stage.selectionIndexes" id="RA5-TF-xS4"/>
+                        <binding destination="XfG-lQ-9wD" name="selectionIndexes" keyPath="self.representedObject.stage.modelSelectionIndexes" id="e1H-jo-jrM"/>
+                        <binding destination="XfG-lQ-9wD" name="contentArray" keyPath="self.representedObject.stage.models" id="Wdk-QB-Y5x"/>
                     </connections>
                 </arrayController>
             </objects>

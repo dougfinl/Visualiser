@@ -14,15 +14,15 @@ struct FrameUniforms {
 }
 
 struct ModelUniforms {
-    var modelMatrix: float4x4   = identity()
-    var normalMatrix: float4x4  = identity()
+    var modelMatrix: float4x4  = identity()
+    var normalMatrix: float4x4 = identity()
 }
 
 struct MaterialUniforms {
-    var diffuseColor: float4      = [0.0, 0.0, 0.0, 1.0]
-    var specularColor: float4     = [0.0, 0.0, 0.0, 1.0]
+    var diffuseColor: float4     = [0.0, 0.0, 0.0, 1.0]
+    var specularColor: float4    = [0.0, 0.0, 0.0, 1.0]
     
-    var specularIntensity: Float  = 0.0
+    var specularIntensity: Float = 0.0
     var pad1: Float = 0.0
     var pad2: Float = 0.0
     var pad3: Float = 0.0

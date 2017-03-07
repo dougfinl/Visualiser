@@ -6,7 +6,6 @@
 //  Copyright © 2016 Douglas Finlay. All rights reserved.
 //
 
-import Cocoa
 import MetalKit
 
 enum VertexAttributes: Int {
@@ -31,6 +30,8 @@ let ConstantBufferSize = 1024*1024
 
 class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
     
+    var renderableModels = [RenderableModel]()
+    
     var device: MTLDevice! = nil
     
     var commandQueue: MTLCommandQueue! = nil
@@ -50,7 +51,9 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
     
     let notificationCenter = NotificationCenter.default
     
-    @IBOutlet var meshesArrayController: NSArrayController!
+    var modelManager: ModelManager! = nil
+    
+    @IBOutlet var modelsArrayController: NSArrayController!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -111,8 +114,6 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         mtlVertexDescriptor.layouts[0].stepRate = 1
         mtlVertexDescriptor.layouts[0].stepFunction = .perVertex
         
-        
-        
         let simpleScenePipelineStateDescriptor = MTLRenderPipelineDescriptor()
         simpleScenePipelineStateDescriptor.label = "SimpleScenePipeline"
         simpleScenePipelineStateDescriptor.vertexFunction = simpleSceneVertexFunction
@@ -136,6 +137,8 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         camera.viewportWidth = Float(drawableSize.width)
         camera.viewportHeight = Float(drawableSize.height)
         camera.update()
+        
+        modelManager = ModelManager(device: device, vertexDescriptor: mtlVertexDescriptor)
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -177,8 +180,8 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
             renderEncoder.setFrontFacing(.counterClockwise)
             renderEncoder.setCullMode(.back)
             
-            for mesh in meshesArrayController.arrangedObjects as! [Mesh] {
-                mesh.render(encoder: renderEncoder)
+            for renderableModel in renderableModels {
+                renderableModel.render(encoder: renderEncoder)
             }
             
             renderEncoder.popDebugGroup()
@@ -212,37 +215,11 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         camera.update()
     }
     
-    func loadModel(fromFile fileURL: URL) -> [Mesh] {
-        NSLog("importing \(fileURL)")
-
-        let mdlVertexDescriptor = MTKModelIOVertexDescriptorFromMetal(mtlVertexDescriptor)
-        (mdlVertexDescriptor.attributes[VertexAttributes.VertexAttributePosition.rawValue] as! MDLVertexAttribute).name = MDLVertexAttributePosition
-        (mdlVertexDescriptor.attributes[VertexAttributes.VertexAttributeNormal.rawValue] as! MDLVertexAttribute).name = MDLVertexAttributeNormal
-        (mdlVertexDescriptor.attributes[VertexAttributes.VertexAttributeTexCoord.rawValue] as! MDLVertexAttribute).name = MDLVertexAttributeTextureCoordinate
-        
-        let meshBufferAllocator = MTKMeshBufferAllocator(device: device)
-        
-        let asset = MDLAsset(url: fileURL, vertexDescriptor: mdlVertexDescriptor, bufferAllocator: meshBufferAllocator)
-        
-        var mdlMeshes: NSArray? = NSArray.init()
-        var mtkMeshes: [MTKMesh] = []
-        
-        do {
-            try mtkMeshes = MTKMesh.newMeshes(from: asset, device: device, sourceMeshes: &mdlMeshes)
-        } catch let error {
-            NSLog("error: failed to create mesh: \(error)")
-            return []
+    func loadModel(fromURL url: URL) {
+        if let renderableModel = self.modelManager.loadModel(fromURL: url) {
+            renderableModels.append(renderableModel)
+            modelsArrayController.addObject(renderableModel.model)
         }
-        
-        assert(mtkMeshes.count == mdlMeshes!.count, "mdlMesh and mtkMesh arrays differ in size")
-        
-        var result: [Mesh] = []
-        for (i, m) in mtkMeshes.enumerated() {
-            let mesh = Mesh(mtkMesh: m, mdlMesh: mdlMeshes![i] as! MDLMesh, device: device)
-            result.append(mesh)
-        }
-        
-        return result
     }
     
     func selectMesh(_ mesh: Mesh) {

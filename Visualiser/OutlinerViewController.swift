@@ -10,6 +10,6 @@ import Cocoa
 
 class OutlinerViewController: NSViewController {
     
-    @IBOutlet var meshesArrayController: NSArrayController!
+    @IBOutlet var modelsArrayController: NSArrayController!
     
 }
