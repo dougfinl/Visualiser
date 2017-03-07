@@ -12,6 +12,12 @@ class Show: NSDocument {
     
     var stage = Stage()
     
+    var documentFileWrapper: FileWrapper?
+    
+    private static let StageFileName = "stage.json"
+    private static let CameraFileName = "camera.json"
+    private static let MeshesDirName = "meshes"
+    
     override init() {
         super.init()
         // Add your subclass-specific initialization here.
@@ -28,18 +34,56 @@ class Show: NSDocument {
         self.addWindowController(windowController)
     }
     
-    override func data(ofType typeName: String) throws -> Data {
-        // Insert code here to write your document to data of the specified type. If outError != nil, ensure that you create and set an appropriate error when returning nil.
-        // You can also choose to override fileWrapperOfType:error:, writeToURL:ofType:error:, or writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
-        throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
+    override func fileWrapper(ofType typeName: String) throws -> FileWrapper {
+        if self.documentFileWrapper == nil {
+            self.documentFileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+        }
+        
+        let fileWrappers = self.documentFileWrapper!.fileWrappers!
+        
+        if fileWrappers[Show.StageFileName] == nil {
+            let stageJSON = self.stage.json()
+            let jsonData = try JSONSerialization.data(withJSONObject: stageJSON, options: [.prettyPrinted])
+            
+            let stageFileWrapper = FileWrapper(regularFileWithContents: jsonData)
+            stageFileWrapper.preferredFilename = Show.StageFileName
+            
+            self.documentFileWrapper!.addFileWrapper(stageFileWrapper)
+        }
+        
+        if fileWrappers[Show.CameraFileName] == nil {
+            let cameraFileWrapper = FileWrapper(regularFileWithContents: Data())
+            cameraFileWrapper.preferredFilename = Show.CameraFileName
+            
+            self.documentFileWrapper!.addFileWrapper(cameraFileWrapper)
+        }
+        
+        if fileWrappers[Show.MeshesDirName] == nil {
+            let meshesFileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+            meshesFileWrapper.preferredFilename = Show.MeshesDirName
+            
+            self.documentFileWrapper!.addFileWrapper(meshesFileWrapper)
+        }
+        
+        return self.documentFileWrapper!
     }
     
-    override func read(from data: Data, ofType typeName: String) throws {
-        // Insert code here to read your document from the given data of the specified type. If outError != nil, ensure that you create and set an appropriate error when returning false.
-        // You can also choose to override readFromFileWrapper:ofType:error: or readFromURL:ofType:error: instead.
-        // If you override either of these, you should also override -isEntireFileLoaded to return false if the contents are lazily loaded.
-        throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
+    override func read(from fileWrapper: FileWrapper, ofType typeName: String) throws {
+        guard let fileWrappers = fileWrapper.fileWrappers else {
+            Swift.print("ERROR: corrupt show file")
+            return
+        }
+        
+        if let stageFileWrapper = fileWrappers[Show.StageFileName] {
+            let stageJSON = try JSONSerialization.jsonObject(with: stageFileWrapper.regularFileContents!, options: []) as! [String : Any]
+            
+            let loadedStage = try Stage(json: stageJSON)
+            self.stage = loadedStage
+            
+            for m in loadedStage.models {
+                Swift.print(m.name)
+            }
+        }
     }
-
     
 }

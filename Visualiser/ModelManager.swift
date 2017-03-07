@@ -33,7 +33,7 @@ class ModelManager {
     //
     // TODO: this should not duplicate meshes already in the store
     func loadModel(fromURL url: URL) -> RenderableModel? {
-        let path = url.absoluteString
+        let path = url.standardizedFileURL.absoluteString
         
         print("Loading " + path)
         
@@ -61,6 +61,7 @@ class ModelManager {
         
         let model = Model()
         model.name = url.deletingPathExtension().lastPathComponent
+        model.path = path
         
         let renderableModel = RenderableModel(model: model, mesh: mesh, device: self.device)
         
