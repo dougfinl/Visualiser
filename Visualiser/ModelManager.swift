@@ -8,6 +8,10 @@
 
 import MetalKit
 
+enum RenderableModelError: Error {
+    case couldNotLoad
+}
+
 class ModelManager {
     
     private var meshStore = [Mesh]()
@@ -29,15 +33,18 @@ class ModelManager {
         (mdlVertexDescriptor.attributes[VertexAttributes.VertexAttributeTexCoord.rawValue] as! MDLVertexAttribute).name = MDLVertexAttributeTextureCoordinate
     }
     
-    // Loads a model from the specified URL. Returns nil if loading fails.
+    // Loads a renderable model from the specified URL. Returns nil if loading fails.
     //
     // TODO: this should not duplicate meshes already in the store
-    func loadModel(fromURL url: URL) -> RenderableModel? {
-        let path = url.standardizedFileURL.absoluteString
+    func renderableModel(forModel model: Model) -> RenderableModel? {
+        print("Loading " + model.path)
         
-        print("Loading " + path)
+        guard let modelURL = URL(string: model.path) else {
+            print("ERROR: invalid model URL: \(model.path)")
+            return nil
+        }
         
-        let asset = MDLAsset(url: url, vertexDescriptor: self.mdlVertexDescriptor, bufferAllocator: self.meshBufferAllocator)
+        let asset = MDLAsset(url: modelURL, vertexDescriptor: self.mdlVertexDescriptor, bufferAllocator: self.meshBufferAllocator)
         
         var mdlMeshes: NSArray? = NSArray.init()
         var mtkMeshes: [MTKMesh] = []
@@ -58,10 +65,6 @@ class ModelManager {
         
         let mesh = Mesh(mtkMesh: mtkMeshes[0], mdlMesh: mdlMeshes![0] as! MDLMesh, device: device)
         self.meshStore.append(mesh)
-        
-        let model = Model()
-        model.name = url.deletingPathExtension().lastPathComponent
-        model.path = path
         
         let renderableModel = RenderableModel(model: model, mesh: mesh, device: self.device)
         

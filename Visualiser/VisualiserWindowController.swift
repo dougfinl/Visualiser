@@ -13,7 +13,7 @@ class VisualiserWindowController: NSWindowController {
     override var document: AnyObject? {
         didSet {
             if let document = self.document as? NSDocument {
-                self.contentViewController?.representedObject = document
+                (self.contentViewController as! VisualiserViewController).representedObject = document
             }
         }
     }

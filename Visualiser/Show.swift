@@ -20,7 +20,6 @@ class Show: NSDocument {
     
     override init() {
         super.init()
-        // Add your subclass-specific initialization here.
     }
     
     override class func autosavesInPlace() -> Bool {
@@ -30,7 +29,7 @@ class Show: NSDocument {
     override func makeWindowControllers() {
         // Returns the Storyboard that contains your Document window.
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        let windowController = storyboard.instantiateController(withIdentifier: "Document Window Controller") as! NSWindowController
+        let windowController = storyboard.instantiateController(withIdentifier: "Document Window Controller") as! VisualiserWindowController
         self.addWindowController(windowController)
     }
     
@@ -79,10 +78,6 @@ class Show: NSDocument {
             
             let loadedStage = try Stage(json: stageJSON)
             self.stage = loadedStage
-            
-            for m in loadedStage.models {
-                Swift.print(m.name)
-            }
         }
     }
     

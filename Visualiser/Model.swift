@@ -56,6 +56,8 @@ class Model: NSObject, JSONCodeable {
     
     override init() {
         super.init()
+        
+        self.updateModelMatrix()
     }
     
     required init(json: [String:Any]) throws {
@@ -88,6 +90,8 @@ class Model: NSObject, JSONCodeable {
         self.rotationY = rotY  ?? 0.0
         self.rotationZ = rotZ  ?? 0.0
         self.mscale    = scale ?? 1.0
+        
+        self.updateModelMatrix()
     }
     
     func json() -> [String : Any] {

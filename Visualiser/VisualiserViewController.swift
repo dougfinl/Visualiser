@@ -15,6 +15,9 @@ class VisualiserViewController: NSSplitViewController {
             for viewController in self.childViewControllers {
                 viewController.representedObject = representedObject
             }
+
+            // The document has changed so recreate renderable models
+            self.createRenderables()
         }
     }
     
@@ -46,8 +49,7 @@ class VisualiserViewController: NSSplitViewController {
         openPanel.begin { (result: Int) in
             if (result == NSFileHandlingPanelOKButton) {
                 let fileURL = openPanel.url!
-                
-                self.metalViewController.loadModel(fromURL: fileURL)
+                self.loadModel(fromURL: fileURL)
                 
                 // Show the sidebar
                 if self.sidebarSplitViewItem.isCollapsed {
@@ -55,6 +57,34 @@ class VisualiserViewController: NSSplitViewController {
                 }
             }
         }
+    }
+    
+    func createRenderables() {
+        for m in (self.representedObject as! Show).stage.models {
+            do {
+                try metalViewController.createRenderableModel(forModel: m)
+            } catch {
+                print("ERROR: could not create renderable for \(m.name)")
+            }
+        }
+    }
+    
+    func loadModel(fromURL url: URL) {
+        let path = url.standardizedFileURL.absoluteString
+        let name = (path as NSString).lastPathComponent
+        
+        let newModel = Model()
+        newModel.path = path
+        newModel.name = name
+        
+        do {
+            try metalViewController.createRenderableModel(forModel: newModel)
+        } catch {
+            print("ERROR: could not create renderable for \(newModel.name)")
+            return
+        }
+        
+        modelsArrayController.addObject(newModel)
     }
     
     @IBAction func toggleInspector(sender: AnyObject) {

@@ -196,6 +196,14 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         commandBuffer.commit()
     }
     
+    func createRenderableModel(forModel model: Model) throws {
+        if let renderableModel = modelManager.renderableModel(forModel: model) {
+            renderableModels.append(renderableModel)
+        } else {
+            throw RenderableModelError.couldNotLoad
+        }
+    }
+    
     func update() {
         // MARK: fill the uniform buffer
         let pUniforms = uniformBuffer.contents()
@@ -214,14 +222,7 @@ class MetalViewController: NSViewController, MTKViewDelegate, NSWindowDelegate {
         camera.radius -= Float(event.scrollingDeltaY / 20.0)
         camera.update()
     }
-    
-    func loadModel(fromURL url: URL) {
-        if let renderableModel = self.modelManager.loadModel(fromURL: url) {
-            renderableModels.append(renderableModel)
-            modelsArrayController.addObject(renderableModel.model)
-        }
-    }
-    
+
     func selectMesh(_ mesh: Mesh) {
         notificationCenter.post(name: Notification.Name(rawValue: "meshSelectionChanged"), object: nil, userInfo: ["selectedMesh":mesh])
     }

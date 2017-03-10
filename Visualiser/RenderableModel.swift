@@ -10,7 +10,7 @@ import Metal
 
 class RenderableModel: NSObject {
     
-    dynamic var model: Model
+    var model: Model
     
     var mesh: Mesh
     
