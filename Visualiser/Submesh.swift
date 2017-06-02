@@ -40,8 +40,23 @@ class Submesh {
                 tmpMaterialUniforms.diffuseColor.y = property.float3Value.y
                 tmpMaterialUniforms.diffuseColor.z = property.float3Value.z
                 tmpMaterialUniforms.diffuseColor.w = 1.0
+            } else if property.type == .color {
+                tmpMaterialUniforms.diffuseColor.x = Float(property.color!.components![0])
+                tmpMaterialUniforms.diffuseColor.y = Float(property.color!.components![1])
+                tmpMaterialUniforms.diffuseColor.z = Float(property.color!.components![2])
+                tmpMaterialUniforms.diffuseColor.w = Float(property.color!.components![3])
             } else {
-                NSLog("warning: found base color but cannot determine type")
+                NSLog("warning]: found base color of unhandled type \(property.type.rawValue)")
+            }
+            
+            // If the mesh has no texture, assign the default white texture
+            if self.diffuseTexture == nil {
+                do {
+                    let textureLoader = MTKTextureLoader(device: device)
+                    try self.diffuseTexture = textureLoader.newTexture(withName: "white_pixel", scaleFactor: 1, bundle: nil, options: [:])
+                } catch let error {
+                    NSLog("failed to load default diffuse texture: \(error)")
+                }
             }
         }
         

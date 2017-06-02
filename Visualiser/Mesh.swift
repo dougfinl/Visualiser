@@ -19,8 +19,6 @@ class Mesh {
         
         assert(mtkMesh.submeshes.count == mdlMesh.submeshes!.count, "Number of submeshes in mtkMesh and mdlMesh does not match")
         
-        mdlMesh.makeVerticesUnique()
-        
         for i in 0..<mtkMesh.submeshes.count {
             let m = Submesh(mtkSubmesh: mtkMesh.submeshes[i],
                             mdlSubmesh: mdlMesh.submeshes![i] as! MDLSubmesh,
