@@ -80,6 +80,7 @@ vertex VertexOut gBufferVertex(VertexIn current [[stage_in]],
     float4x4 viewProjection = frameUniforms->projectionMatrix * frameUniforms->viewMatrix;
     
     vertexOut.position = viewProjection * modelUniforms->modelMatrix * current.position;
+    vertexOut.normal = modelUniforms->normalMatrix * current.position;
     vertexOut.texCoord = current.texCoord;
     
     return vertexOut;
@@ -92,7 +93,7 @@ fragment GBufferOut gBufferFragment(VertexOut inFrag [[stage_in]],
     constexpr sampler diffuseSampler(min_filter::linear, mag_filter::linear);
     
     out.albedo = diffuseTexture.sample(diffuseSampler, inFrag.texCoord);
-    out.normal = float4(1.0, 0.0, 0.0, 1.0);
+    out.normal = inFrag.normal;
     out.position = inFrag.position;
     
     return out;

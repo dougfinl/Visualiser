@@ -6,7 +6,6 @@
 //  Copyright © 2017 Douglas Finlay. All rights 
 
 import Foundation
-import simd
 
 class Model: NSObject, JSONCodeable {
     
@@ -16,48 +15,57 @@ class Model: NSObject, JSONCodeable {
     
     var positionX: Float = 0.0 {
         didSet {
-            updateModelMatrix()
+            _dirty = true
         }
     }
     var positionY: Float = 0.0 {
         didSet {
-            updateModelMatrix()
+            _dirty = true
         }
     }
     var positionZ: Float = 0.0 {
         didSet {
-            updateModelMatrix()
+            _dirty = true
         }
     }
     
     var rotationX: Float = 0.0 {
         didSet {
-            updateModelMatrix()
+            _dirty = true
         }
     }
     var rotationY: Float = 0.0 {
         didSet {
-            updateModelMatrix()
+            _dirty = true
         }
     }
     var rotationZ: Float = 0.0 {
         didSet {
-            updateModelMatrix()
+            _dirty = true
         }
     }
     
     var mscale: Float = 1.0 {
         didSet {
-            updateModelMatrix()
+            _dirty = true
         }
     }
     
-    var modelMatrix: float4x4 = identity()
+    private var _dirty: Bool = true
+    
+    var isDirty: Bool {
+        get {
+            if _dirty {
+                _dirty = false
+                return true
+            } else {
+                return false
+            }
+        }
+    }
     
     override init() {
         super.init()
-        
-        self.updateModelMatrix()
     }
     
     required init(json: [String:Any]) throws {
@@ -90,8 +98,6 @@ class Model: NSObject, JSONCodeable {
         self.rotationY = rotY  ?? 0.0
         self.rotationZ = rotZ  ?? 0.0
         self.mscale    = scale ?? 1.0
-        
-        self.updateModelMatrix()
     }
     
     func json() -> [String : Any] {
@@ -107,10 +113,6 @@ class Model: NSObject, JSONCodeable {
         j["scale"] = self.mscale
         
         return j
-    }
-
-    func updateModelMatrix() {
-        self.modelMatrix = translate(x: positionX, y: positionY, z: positionZ) * rotate(x: radians(fromDegrees: rotationX), y: radians(fromDegrees: rotationY), z: radians(fromDegrees: rotationZ)) * scale(x: mscale, y: mscale, z: mscale)
     }
     
 }

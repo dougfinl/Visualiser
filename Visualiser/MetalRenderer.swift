@@ -314,9 +314,9 @@ class MetalRenderer {
         let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: gBufferRenderPassDescriptor)
         encoder.label = "geometry buffer"
         encoder.setDepthStencilState(gBufferDepthStencilState)
+        encoder.setFrontFacing(.counterClockwise)
         encoder.setCullMode(.back)
         encoder.setRenderPipelineState(gBufferRenderPipelineState)
-        
         encoder.setVertexBuffer(frameUniformBuffer, offset: 0, at: 1)
         
         for model in models {
@@ -390,6 +390,10 @@ class MetalRenderer {
         var frameUniforms = FrameUniforms(viewMatrix: camera.viewMatrix,
                                      projectionMatrix: camera.projectionMatrix)
         memcpy(pFrameUniforms, &frameUniforms, MemoryLayout<FrameUniforms>.size)
+        
+        for m in renderableModels {
+            m.update(camera: camera)
+        }
     }
     
 }
