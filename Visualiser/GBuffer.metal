@@ -1,14 +1,13 @@
 //
-//  Shaders.metal
+//  GBuffer.metal
 //  Visualiser
 //
-//  Created by Douglas Finlay on 30/12/2016.
-//  Copyright © 2016 Douglas Finlay. All rights reserved.
+//  Created by Douglas Finlay on 05/06/2017.
+//  Copyright © 2017 Douglas Finlay. All rights reserved.
 //
 
 #include <metal_stdlib>
 using namespace metal;
-
 
 // MARK: binding points
 enum VertexAttributes {
@@ -27,7 +26,6 @@ enum BufferIndex {
     MaterialUniformBuffer = 2,
     ModelUniformBuffer    = 3
 };
-    
 
 // MARK: data types
 struct FrameUniforms {
@@ -54,39 +52,48 @@ struct MaterialUniforms {
 struct VertexIn {
     float4 position [[attribute(VertexAttributePosition)]];
     float4 normal   [[attribute(VertexAttributeNormal)]];
-    half2  texCoord [[attribute(VertexAttributeTexCoord)]];
+    float2 texCoord [[attribute(VertexAttributeTexCoord)]];
 };
+
 
 struct VertexOut {
     float4 position [[position]];
-    half2  texCoord;
-    half4  color;
+    float4 color;
+    float4 normal;
+    float4 v_model;
+    float2 texCoord;
 };
 
-constexpr sampler s(coord::normalized,
-                    address::repeat,
-                    filter::linear);
+struct GBufferOut {
+    float4 albedo   [[color(0)]];
+    float4 normal   [[color(1)]];
+    float4 position [[color(2)]];
+};
 
-vertex VertexOut simpleSceneVertex(VertexIn current [[stage_in]],
-                                   constant FrameUniforms *frameUniforms [[buffer(FrameUniformBuffer)]],
-                                   constant MaterialUniforms *materialUniforms [[buffer(MaterialUniformBuffer)]],
-                                   constant ModelUniforms *modelUniforms [[buffer(ModelUniformBuffer)]]) {
+
+vertex VertexOut gBufferVertex(VertexIn current [[stage_in]],
+                               constant FrameUniforms *frameUniforms [[buffer(FrameUniformBuffer)]],
+                               constant MaterialUniforms *materialUniforms [[buffer(MaterialUniformBuffer)]],
+                               constant ModelUniforms *modelUniforms [[buffer(ModelUniformBuffer)]]) {
     VertexOut vertexOut;
     
     float4x4 viewProjection = frameUniforms->projectionMatrix * frameUniforms->viewMatrix;
     
     vertexOut.position = viewProjection * modelUniforms->modelMatrix * current.position;
-//    vertexOut.color = half4(1.0f, 1.0f, 1.0f, 1.0f);
     vertexOut.texCoord = current.texCoord;
     
     return vertexOut;
 }
 
-fragment half4 simpleSceneFragment(VertexOut inFrag [[stage_in]],
-                                   texture2d<half> diffuseTexture [[texture(DiffuseTextureIndex)]]) {
-    constexpr sampler defaultSampler;
+fragment GBufferOut gBufferFragment(VertexOut inFrag [[stage_in]],
+                                    texture2d<float> diffuseTexture [[texture(DiffuseTextureIndex)]]) {
+    GBufferOut out;
     
-    half4 color = diffuseTexture.sample(defaultSampler, float2(inFrag.texCoord));
+    constexpr sampler diffuseSampler(min_filter::linear, mag_filter::linear);
     
-    return half4(color);
+    out.albedo = diffuseTexture.sample(diffuseSampler, inFrag.texCoord);
+    out.normal = float4(1.0, 0.0, 0.0, 1.0);
+    out.position = inFrag.position;
+    
+    return out;
 }

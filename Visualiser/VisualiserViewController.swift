@@ -17,23 +17,21 @@ class VisualiserViewController: NSSplitViewController {
             }
 
             // The document has changed so recreate renderable models
-            self.createRenderables()
+            rendererViewController.createRenderables()
         }
     }
     
-    var metalViewController: MetalViewController! = nil
+    var rendererViewController: RendererViewController! = nil
     
     var sidebarViewController: SidebarViewController! = nil
     
     var sidebarSplitViewItem: NSSplitViewItem! = nil
     
-    @IBOutlet var modelsArrayController: NSArrayController!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        metalViewController   = childViewControllers[0] as! MetalViewController
-        sidebarViewController = childViewControllers[1] as! SidebarViewController
+        rendererViewController = childViewControllers[0] as! RendererViewController
+        sidebarViewController  = childViewControllers[1] as! SidebarViewController
         
         sidebarSplitViewItem  = splitViewItem(for: sidebarViewController)
         sidebarSplitViewItem.isCollapsed = true
@@ -49,7 +47,7 @@ class VisualiserViewController: NSSplitViewController {
         openPanel.begin { (result: Int) in
             if (result == NSFileHandlingPanelOKButton) {
                 let fileURL = openPanel.url!
-                self.loadModel(fromURL: fileURL)
+                self.rendererViewController.loadModel(fromURL: fileURL)
                 
                 // Show the sidebar
                 if self.sidebarSplitViewItem.isCollapsed {
@@ -57,34 +55,6 @@ class VisualiserViewController: NSSplitViewController {
                 }
             }
         }
-    }
-    
-    func createRenderables() {
-        for m in (self.representedObject as! Show).stage.models {
-            do {
-                try metalViewController.createRenderableModel(forModel: m)
-            } catch {
-                print("ERROR: could not create renderable for \(m.name)")
-            }
-        }
-    }
-    
-    func loadModel(fromURL url: URL) {
-        let path = url.standardizedFileURL.absoluteString
-        let name = (path as NSString).lastPathComponent
-        
-        let newModel = Model()
-        newModel.path = path
-        newModel.name = name
-        
-        do {
-            try metalViewController.createRenderableModel(forModel: newModel)
-        } catch {
-            print("ERROR: could not create renderable for \(newModel.name)")
-            return
-        }
-        
-        modelsArrayController.addObject(newModel)
     }
     
     @IBAction func toggleInspector(sender: AnyObject) {
