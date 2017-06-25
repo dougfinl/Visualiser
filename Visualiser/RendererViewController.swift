@@ -60,7 +60,7 @@ class RendererViewController: NSViewController, NSWindowDelegate, MTKViewDelegat
     func createRenderables() {
         for m in (self.representedObject as! Show).stage.models {
             do {
-                try renderer.createRenderableModel(forModel: m)
+                try renderer.createRenderable(forModel: m)
             } catch {
                 print("ERROR: could not create renderable for \(m.name)")
             }
@@ -76,7 +76,7 @@ class RendererViewController: NSViewController, NSWindowDelegate, MTKViewDelegat
         newModel.name = name
         
         do {
-            try renderer.createRenderableModel(forModel: newModel)
+            try renderer.createRenderable(forModel: newModel)
         } catch {
             print("ERROR: could not create renderable for \(newModel.name)")
             return

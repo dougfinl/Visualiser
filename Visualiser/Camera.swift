@@ -13,6 +13,9 @@ protocol Camera {
     var projectionMatrix: float4x4 { get }
     var viewMatrix: float4x4 { get }
     
+    var viewportWidth: Float { get set }
+    var viewportHeight: Float { get set }
+    
 }
 
 class ArcballCamera: Camera {

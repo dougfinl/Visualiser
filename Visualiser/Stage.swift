@@ -12,6 +12,8 @@ class Stage: NSObject, JSONCodeable {
     
     var models = [Model]()
     
+    var directionalLights = [DirectionalLight]()
+    
     var modelSelectionIndexes = NSIndexSet()
     
     override init() {

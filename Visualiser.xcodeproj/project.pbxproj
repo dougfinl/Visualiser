@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA1998E51EEEE6FD00800694 /* RenderableLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1998E41EEEE6FD00800694 /* RenderableLight.swift */; };
 		CA307FE41E1567F900D6C0D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA307FE31E1567F900D6C0D6 /* AppDelegate.swift */; };
 		CA307FEB1E1567F900D6C0D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA307FE91E1567F900D6C0D6 /* Main.storyboard */; };
 		CA3080671E1D2E0E00D6C0D6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3080661E1D2E0E00D6C0D6 /* Utils.swift */; };
@@ -24,17 +25,20 @@
 		CA821B541E699A9500BA26B2 /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA821B531E699A9500BA26B2 /* SidebarViewController.swift */; };
 		CA821B561E69E12E00BA26B2 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA821B551E69E12E00BA26B2 /* Stage.swift */; };
 		CA8409E21E6A4BD100459F6D /* NoNameStringValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8409E11E6A4BD100459F6D /* NoNameStringValueTransformer.swift */; };
-		CA8409EB1E6D974200459F6D /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8409EA1E6D974200459F6D /* ModelManager.swift */; };
+		CA8409EB1E6D974200459F6D /* RenderableAssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8409EA1E6D974200459F6D /* RenderableAssetManager.swift */; };
 		CA8409ED1E6DCA7600459F6D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8409EC1E6DCA7600459F6D /* Model.swift */; };
 		CA9773331EE612CD0097E642 /* GBuffer.metal in Sources */ = {isa = PBXBuildFile; fileRef = CA9773321EE612CD0097E642 /* GBuffer.metal */; };
 		CA9D8D641E1E56DE00FBD5F3 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */; };
 		CAB0D8ED1E567B49006C3CAC /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D8EC1E567B49006C3CAC /* Show.swift */; };
 		CAB0D90C1E5686A5006C3CAC /* VisualiserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D90B1E5686A5006C3CAC /* VisualiserViewController.swift */; };
 		CAB0D9101E5880FB006C3CAC /* MeshInspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB0D90F1E5880FA006C3CAC /* MeshInspectorViewController.swift */; };
+		CABA65AD1EED998E00F2CE6F /* Lighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA65AC1EED998E00F2CE6F /* Lighting.swift */; };
+		CABA65AF1EEDA04800F2CE6F /* DirectionalLight.metal in Sources */ = {isa = PBXBuildFile; fileRef = CABA65AE1EEDA04800F2CE6F /* DirectionalLight.metal */; };
 		CAF9092F1EE5A979004310BB /* MetalRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF9092E1EE5A979004310BB /* MetalRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CA1998E41EEEE6FD00800694 /* RenderableLight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderableLight.swift; sourceTree = "<group>"; };
 		CA307FE01E1567F900D6C0D6 /* Visualiser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Visualiser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA307FE31E1567F900D6C0D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA307FEA1E1567F900D6C0D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -54,13 +58,15 @@
 		CA821B531E699A9500BA26B2 /* SidebarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarViewController.swift; sourceTree = "<group>"; };
 		CA821B551E69E12E00BA26B2 /* Stage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		CA8409E11E6A4BD100459F6D /* NoNameStringValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoNameStringValueTransformer.swift; sourceTree = "<group>"; };
-		CA8409EA1E6D974200459F6D /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
+		CA8409EA1E6D974200459F6D /* RenderableAssetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderableAssetManager.swift; sourceTree = "<group>"; };
 		CA8409EC1E6DCA7600459F6D /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		CA9773321EE612CD0097E642 /* GBuffer.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = GBuffer.metal; sourceTree = "<group>"; };
 		CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		CAB0D8EC1E567B49006C3CAC /* Show.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		CAB0D90B1E5686A5006C3CAC /* VisualiserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualiserViewController.swift; sourceTree = "<group>"; };
 		CAB0D90F1E5880FA006C3CAC /* MeshInspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeshInspectorViewController.swift; sourceTree = "<group>"; };
+		CABA65AC1EED998E00F2CE6F /* Lighting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lighting.swift; sourceTree = "<group>"; };
+		CABA65AE1EEDA04800F2CE6F /* DirectionalLight.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = DirectionalLight.metal; sourceTree = "<group>"; };
 		CAF9092E1EE5A979004310BB /* MetalRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,8 +120,9 @@
 				CA8409E51E6A542400459F6D /* Shaders */,
 				CA6161941E25B6CD000E7C80 /* MetalShaderTypes.swift */,
 				CAF9092E1EE5A979004310BB /* MetalRenderer.swift */,
-				CA8409EA1E6D974200459F6D /* ModelManager.swift */,
+				CA8409EA1E6D974200459F6D /* RenderableAssetManager.swift */,
 				CA3441941E6E2F6900F0C6A1 /* RenderableModel.swift */,
+				CA1998E41EEEE6FD00800694 /* RenderableLight.swift */,
 				CA703F8C1E22B92C00D824BF /* Mesh.swift */,
 				CA703F8E1E22BAA600D824BF /* Submesh.swift */,
 			);
@@ -141,6 +148,7 @@
 				CA9773321EE612CD0097E642 /* GBuffer.metal */,
 				CA80466F1EE9D21A00ABA892 /* DeferredComposition.metal */,
 				CA8046711EE9D62F00ABA892 /* PostProcess.metal */,
+				CABA65AE1EEDA04800F2CE6F /* DirectionalLight.metal */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -152,6 +160,7 @@
 				CAB0D8EC1E567B49006C3CAC /* Show.swift */,
 				CA9D8D631E1E56DE00FBD5F3 /* Camera.swift */,
 				CA8409EC1E6DCA7600459F6D /* Model.swift */,
+				CABA65AC1EED998E00F2CE6F /* Lighting.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -228,10 +237,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA1998E51EEEE6FD00800694 /* RenderableLight.swift in Sources */,
 				CA6161951E25B6CD000E7C80 /* MetalShaderTypes.swift in Sources */,
 				CAB0D9101E5880FB006C3CAC /* MeshInspectorViewController.swift in Sources */,
 				CAF9092F1EE5A979004310BB /* MetalRenderer.swift in Sources */,
-				CA8409EB1E6D974200459F6D /* ModelManager.swift in Sources */,
+				CA8409EB1E6D974200459F6D /* RenderableAssetManager.swift in Sources */,
 				CA703F8D1E22B92C00D824BF /* Mesh.swift in Sources */,
 				CAB0D8ED1E567B49006C3CAC /* Show.swift in Sources */,
 				CA8409E21E6A4BD100459F6D /* NoNameStringValueTransformer.swift in Sources */,
@@ -249,8 +259,10 @@
 				CA4314311E6A0C9500BE3E90 /* VisualiserWindowController.swift in Sources */,
 				CA3080671E1D2E0E00D6C0D6 /* Utils.swift in Sources */,
 				CA3441951E6E2F6900F0C6A1 /* RenderableModel.swift in Sources */,
+				CABA65AF1EEDA04800F2CE6F /* DirectionalLight.metal in Sources */,
 				CA821B541E699A9500BA26B2 /* SidebarViewController.swift in Sources */,
 				CA9773331EE612CD0097E642 /* GBuffer.metal in Sources */,
+				CABA65AD1EED998E00F2CE6F /* Lighting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

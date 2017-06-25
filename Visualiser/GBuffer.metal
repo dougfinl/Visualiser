@@ -60,7 +60,7 @@ struct VertexOut {
     float4 position [[position]];
     float4 color;
     float4 normal;
-    float4 v_model;
+    float4 positionModel;
     float2 texCoord;
 };
 
@@ -77,11 +77,13 @@ vertex VertexOut gBufferVertex(VertexIn current [[stage_in]],
                                constant ModelUniforms *modelUniforms [[buffer(ModelUniformBuffer)]]) {
     VertexOut vertexOut;
     
-    float4x4 viewProjection = frameUniforms->projectionMatrix * frameUniforms->viewMatrix;
+    const float4x4 viewProjection = frameUniforms->projectionMatrix * frameUniforms->viewMatrix;
     
-    vertexOut.position = viewProjection * modelUniforms->modelMatrix * current.position;
-    vertexOut.normal = modelUniforms->normalMatrix * current.position;
-    vertexOut.texCoord = current.texCoord;
+    vertexOut.positionModel = modelUniforms->modelMatrix * current.position;
+    vertexOut.position      = viewProjection * vertexOut.positionModel;
+    // vertexOut.normal        = modelUniforms->normalMatrix /*modelUniforms->modelMatrix*/ * float4(current.normal.xyz, 0.0);
+    vertexOut.normal        = normalize(modelUniforms->modelMatrix * float4(current.normal.xyz, 0.0));
+    vertexOut.texCoord      = current.texCoord;
     
     return vertexOut;
 }
@@ -92,9 +94,9 @@ fragment GBufferOut gBufferFragment(VertexOut inFrag [[stage_in]],
     
     constexpr sampler diffuseSampler(min_filter::linear, mag_filter::linear);
     
+    out.position = inFrag.positionModel;
     out.albedo = diffuseTexture.sample(diffuseSampler, inFrag.texCoord);
-    out.normal = inFrag.normal;
-    out.position = inFrag.position;
+    out.normal = float4(inFrag.normal.xyz, 1.0);
     
     return out;
 }

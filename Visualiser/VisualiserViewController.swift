@@ -69,4 +69,18 @@ class VisualiserViewController: NSSplitViewController {
         print("WARNING: deselectAll not yet implemented")
     }
     
+    // MARK:- developer methods
+    @IBAction func devAddDirectionalLight(sender: AnyObject) {
+        let directionalLight = DirectionalLight()
+        directionalLight.direction = [-1.0, -1.0, -1.0]
+        directionalLight.color = [0.15, 0.25, 0.9]
+
+        do {
+            try rendererViewController.renderer.createRenderable(forDirectionalLight: directionalLight)
+        } catch {
+            print("Could not create renderable directional light")
+            return
+        }
+    }
+    
 }

@@ -25,6 +25,11 @@ enum BufferIndex: Int {
     case ModelUniformBuffer
 }
 
+struct Vertex {
+    var position: (x:Float, y:Float) = (0, 0)
+    var texCoord: (u:Float, v:Float) = (0, 0)
+}
+
 let MaxInflightBuffers = 3
 let ConstantBufferSize = 1024*1024
 
@@ -34,7 +39,7 @@ class MetalRenderer {
         didSet {
             view!.device      = device
             view!.sampleCount = 1
-            view!.clearColor  = MTLClearColorMake(0.5, 0.0, 0.5, 1.0)
+            view!.clearColor  = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
             view!.colorPixelFormat        = .bgra8Unorm
             view!.depthStencilPixelFormat = .depth32Float_stencil8
         }
@@ -49,9 +54,11 @@ class MetalRenderer {
     
     var frameUniformBuffer: MTLBuffer! = nil
     
-    var modelManager: ModelManager! = nil
+    var renderableAssetManager: RenderableAssetManager! = nil
     
     var renderableModels = [RenderableModel]()
+    
+    var renderableLights = [RenderableDirectionalLight]()
     
     private lazy var vertexDescriptor: MTLVertexDescriptor = {
         let desc = MTLVertexDescriptor()
@@ -75,6 +82,7 @@ class MetalRenderer {
         return desc
     }()
     
+    // MARK:- textures
     private lazy var gBufferAlbedoTexture: MTLTexture = {
         guard let v = self.view else {
             fatalError("failed to set dimensions of geometry buffer albedo texture")
@@ -139,9 +147,42 @@ class MetalRenderer {
         return self.device.makeTexture(descriptor: desc)
     }()
     
+    private lazy var lightBufferTexture: MTLTexture = {
+        guard let v = self.view else {
+            fatalError("failed to set dimensions of light texture")
+        }
+        let width = Int(v.frame.size.width)
+        let height = Int(v.frame.size.height)
+        
+        let desc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: width, height: height, mipmapped: false)
+        desc.sampleCount = 1
+        desc.storageMode = .private
+        desc.textureType = .type2D
+        desc.usage       = [.renderTarget, .shaderRead]
+        
+        return self.device.makeTexture(descriptor: desc)
+    }()
+    
+    private lazy var compositionTexture: MTLTexture = {
+        guard let v = self.view else {
+            fatalError("failed to set dimensions of composition texture")
+        }
+        let width = Int(v.frame.size.width)
+        let height = Int(v.frame.size.height)
+        
+        let desc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: width, height: height, mipmapped: false)
+        desc.sampleCount = 1
+        desc.storageMode = .private
+        desc.textureType = .type2D
+        desc.usage       = [.renderTarget, .shaderRead]
+        
+        return self.device.makeTexture(descriptor: desc)
+    }()
+    
+    // MARK:- render pass descriptors
     private lazy var gBufferRenderPassDescriptor: MTLRenderPassDescriptor = {
         let desc = MTLRenderPassDescriptor()
-        desc.colorAttachments[0].clearColor  = MTLClearColorMake(0.5, 0.0, 0.5, 1.0)
+        desc.colorAttachments[0].clearColor  = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
         desc.colorAttachments[0].texture     = self.gBufferAlbedoTexture
         desc.colorAttachments[0].loadAction  = .clear
         desc.colorAttachments[0].storeAction = .store
@@ -162,14 +203,27 @@ class MetalRenderer {
         return desc
     }()
     
-    private lazy var gBufferDepthStencilState: MTLDepthStencilState = {
-        let desc = MTLDepthStencilDescriptor()
-        desc.isDepthWriteEnabled = true
-        desc.depthCompareFunction = .lessEqual
+    private lazy var bufferCompositionRenderPassDescriptor: MTLRenderPassDescriptor = {
+        let desc = MTLRenderPassDescriptor()
+        desc.colorAttachments[0].clearColor  = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
+        desc.colorAttachments[0].texture     = self.compositionTexture
+        desc.colorAttachments[0].loadAction  = .clear
+        desc.colorAttachments[0].storeAction = .store
         
-        return self.device.makeDepthStencilState(descriptor: desc)
+        return desc
     }()
     
+    private lazy var lightBufferRenderPassDescriptor: MTLRenderPassDescriptor = {
+        let desc = MTLRenderPassDescriptor()
+        desc.colorAttachments[0].clearColor  = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
+        desc.colorAttachments[0].texture     = self.lightBufferTexture
+        desc.colorAttachments[0].loadAction  = .clear
+        desc.colorAttachments[0].storeAction = .store
+        
+        return desc
+    }()
+    
+    // MARK:- render pipeline states
     private lazy var gBufferRenderPipelineState: MTLRenderPipelineState = {
         let desc = MTLRenderPipelineDescriptor()
         desc.colorAttachments[0].pixelFormat = .rgba8Unorm
@@ -192,32 +246,6 @@ class MetalRenderer {
         return state
     }()
     
-    private lazy var compositionTexture: MTLTexture = {
-        guard let v = self.view else {
-            fatalError("failed to set dimensions of composition texture")
-        }
-        let width = Int(v.frame.size.width)
-        let height = Int(v.frame.size.height)
-        
-        let desc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: width, height: height, mipmapped: false)
-        desc.sampleCount = 1
-        desc.storageMode = .private
-        desc.textureType = .type2D
-        desc.usage       = [.renderTarget, .shaderRead]
-        
-        return self.device.makeTexture(descriptor: desc)
-    }()
-    
-    private lazy var bufferCompositionRenderPassDescriptor: MTLRenderPassDescriptor = {
-        let desc = MTLRenderPassDescriptor()
-        desc.colorAttachments[0].clearColor  = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
-        desc.colorAttachments[0].texture    = self.compositionTexture
-        desc.colorAttachments[0].loadAction  = .clear
-        desc.colorAttachments[0].storeAction = .store
-        
-        return desc
-    }()
-    
     private lazy var compositionRenderPipelineState: MTLRenderPipelineState = {
         let desc = MTLRenderPipelineDescriptor()
         desc.colorAttachments[0].pixelFormat = .bgra8Unorm
@@ -235,38 +263,9 @@ class MetalRenderer {
         return state
     }()
     
-    private lazy var compositionDepthStencilState: MTLDepthStencilState = {
-        let desc = MTLDepthStencilDescriptor()
-        desc.isDepthWriteEnabled  = false
-        desc.depthCompareFunction = .always
-        
-        return self.device.makeDepthStencilState(descriptor: desc)
-    }()
-    
-    struct QuadVertex {
-        var position: (x:Float, y:Float) = (0, 0)
-        var texCoord: (u:Float, v:Float) = (0, 0)
-    }
-    
-    private lazy var fullscreenQuadVertexBuffer:MTLBuffer = {
-        var quadVerts = Array(repeating: QuadVertex(), count: 6)
-        quadVerts[0].position = (-1,1) // top left
-        quadVerts[0].texCoord = (0,0)
-        quadVerts[1].position = (1,1)  // top right
-        quadVerts[1].texCoord = (1,0)
-        quadVerts[2].position = (1,-1)  // bottom right
-        quadVerts[2].texCoord = (1,1)
-        quadVerts[3] = quadVerts[0]
-        quadVerts[4] = quadVerts[2]
-        quadVerts[5].position = (-1,-1) // bottom left
-        quadVerts[5].texCoord = (0,1)
-        
-        return self.device.makeBuffer(bytes: quadVerts, length: MemoryLayout<Float>.size * 24, options:[])
-    }()
-    
     private lazy var postProcessRenderPipelineState: MTLRenderPipelineState = {
-       let desc = MTLRenderPipelineDescriptor()
-        desc.label = "post=process render pipeline"
+        let desc = MTLRenderPipelineDescriptor()
+        desc.label = "post-process render pipeline"
         desc.colorAttachments[0].pixelFormat = .bgra8Unorm
         desc.depthAttachmentPixelFormat      = .depth32Float_stencil8
         desc.stencilAttachmentPixelFormat    = .depth32Float_stencil8
@@ -284,6 +283,64 @@ class MetalRenderer {
         return state
     }()
     
+    private lazy var directionalLightBufferRenderPipelineState: MTLRenderPipelineState = {
+        let desc = MTLRenderPipelineDescriptor()
+        desc.label = "light buffer render pipeline"
+        desc.colorAttachments[0].isBlendingEnabled   = true
+        desc.colorAttachments[0].rgbBlendOperation   = .add
+        desc.colorAttachments[0].alphaBlendOperation = .add
+        desc.colorAttachments[0].pixelFormat         = .bgra8Unorm
+        desc.colorAttachments[0].sourceRGBBlendFactor        = .one
+        desc.colorAttachments[0].sourceAlphaBlendFactor      = .one
+        desc.colorAttachments[0].destinationRGBBlendFactor   = .one
+        desc.colorAttachments[0].destinationAlphaBlendFactor = .one
+        desc.vertexFunction   = self.library.makeFunction(name: "directionalLightVertex")
+        desc.fragmentFunction = self.library.makeFunction(name: "directionalLightFragment")
+        
+        var state: MTLRenderPipelineState
+        do {
+            try state = self.device.makeRenderPipelineState(descriptor: desc)
+        } catch let error {
+            fatalError("Could not create directional light buffer pipeline state: \(error)")
+        }
+        
+        return state
+    }()
+    
+    // MARK:- depth stencil states
+    private lazy var gBufferDepthStencilState: MTLDepthStencilState = {
+        let desc = MTLDepthStencilDescriptor()
+        desc.isDepthWriteEnabled = true
+        desc.depthCompareFunction = .lessEqual
+        
+        return self.device.makeDepthStencilState(descriptor: desc)
+    }()
+    
+    private lazy var compositionDepthStencilState: MTLDepthStencilState = {
+        let desc = MTLDepthStencilDescriptor()
+        desc.isDepthWriteEnabled  = false
+        desc.depthCompareFunction = .always
+        
+        return self.device.makeDepthStencilState(descriptor: desc)
+    }()
+    
+    // MARK:- full-screen quad
+    private lazy var fullscreenQuadVertexBuffer: MTLBuffer = {
+        var quadVerts = Array(repeating: Vertex(), count: 6)
+        quadVerts[0].position = (-1,1) // top left
+        quadVerts[0].texCoord = (0,0)
+        quadVerts[1].position = (1,1)  // top right
+        quadVerts[1].texCoord = (1,0)
+        quadVerts[2].position = (1,-1)  // bottom right
+        quadVerts[2].texCoord = (1,1)
+        quadVerts[3] = quadVerts[0]
+        quadVerts[4] = quadVerts[2]
+        quadVerts[5].position = (-1,-1) // bottom left
+        quadVerts[5].texCoord = (0,1)
+        
+        return self.device.makeBuffer(bytes: quadVerts, length: MemoryLayout<Float>.size * 24, options:[])
+    }()
+    
     init() {
         device = MTLCreateSystemDefaultDevice()
         
@@ -299,15 +356,26 @@ class MetalRenderer {
         
         library = device.newDefaultLibrary()!
         
-        modelManager = ModelManager(device: device, vertexDescriptor: vertexDescriptor)
+        renderableAssetManager = RenderableAssetManager(device: device, vertexDescriptor: vertexDescriptor)
     }
     
-    func createRenderableModel(forModel model: Model) throws {
-        if let renderableModel = modelManager.renderableModel(forModel: model) {
+    func createRenderable(forModel model: Model) throws {
+        if let renderableModel = renderableAssetManager.renderableModel(forModel: model) {
             renderableModels.append(renderableModel)
         } else {
-            throw RenderableModelError.couldNotLoad
+            throw RenderableAssetError.couldNotLoad
         }
+    }
+    
+    func createRenderable(forDirectionalLight directionalLight: DirectionalLight) throws {
+        if let renderableDirectionalLight = renderableAssetManager.renderableDirectionalLight(forDirectionalLight: directionalLight) {
+            renderableLights.append(renderableDirectionalLight)
+        } else {
+            throw RenderableAssetError.couldNotLoad
+        }
+    }
+    
+    func renderShadowBuffer(commandBuffer: MTLCommandBuffer) {
     }
     
     func renderGBuffer(models: [RenderableModel], commandBuffer: MTLCommandBuffer) {
@@ -326,8 +394,17 @@ class MetalRenderer {
         encoder.endEncoding()
     }
     
-    func renderLightBuffer(commandBuffer: MTLCommandBuffer) {
+    func renderLightBuffer(directionalLights: [RenderableDirectionalLight], commandBuffer: MTLCommandBuffer) {
+        let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: lightBufferRenderPassDescriptor)
+        encoder.label = "directional light accumulation"
+        encoder.setRenderPipelineState(directionalLightBufferRenderPipelineState)
+        encoder.setFragmentTexture(gBufferNormalTexture, at: 0)
         
+        for light in directionalLights {
+            light.render(encoder: encoder)
+        }
+        
+        encoder.endEncoding()
     }
     
     func renderCombineBuffers(commandBuffer: MTLCommandBuffer) {
@@ -337,8 +414,8 @@ class MetalRenderer {
         encoder.setDepthStencilState(compositionDepthStencilState)
         encoder.setVertexBuffer(fullscreenQuadVertexBuffer, offset: 0, at: 0)
         encoder.setFragmentTexture(gBufferAlbedoTexture, at: 0)
-//        encoder.setFragmentTexture(lightBufferTexture, at: 1)
-        encoder.setFragmentTexture(gBufferNormalTexture, at: 1)
+        encoder.setFragmentTexture(lightBufferTexture, at: 1)
+        encoder.setFragmentTexture(gBufferNormalTexture, at: 2)
         encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         encoder.endEncoding()
     }
@@ -363,12 +440,13 @@ class MetalRenderer {
         commandBuffer.label = "frame command buffer"
         
         // MARK: render the shadow buffer
+        renderShadowBuffer(commandBuffer: commandBuffer)
         
         // MARK: render the G-buffer
         renderGBuffer(models: renderableModels, commandBuffer: commandBuffer)
         
         // MARK: render the light buffer
-//        renderLightBuffer(commandBuffer: commandBuffer)
+        renderLightBuffer(directionalLights: renderableLights, commandBuffer: commandBuffer)
         
         // MARK: combine to create the final buffer
         renderCombineBuffers(commandBuffer: commandBuffer)
@@ -393,6 +471,10 @@ class MetalRenderer {
         
         for m in renderableModels {
             m.update(camera: camera)
+        }
+        
+        for light in renderableLights {
+            light.update(camera: camera)
         }
     }
     

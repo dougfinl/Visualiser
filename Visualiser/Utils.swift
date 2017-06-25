@@ -8,15 +8,12 @@
 
 import simd
 
-let M_PI_F = Float(M_PI)
-
-
 func radians(fromDegrees theta: Float) -> Float {
-    return theta * M_PI_F/180.0
+    return theta * Float.pi/180.0
 }
 
 func degrees(fromRadians theta: Float) -> Float {
-    return theta * 180.0/M_PI_F
+    return theta * 180.0/Float.pi
 }
 
 func identity() -> float4x4 {

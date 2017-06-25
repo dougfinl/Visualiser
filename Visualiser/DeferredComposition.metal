@@ -32,11 +32,13 @@ vertex VertexOut compositionVertex(const device VertexIn* vertexArray [[buffer(0
 
 fragment float4 compositionFragment(VertexOut in [[stage_in]],
                                     texture2d<float> albedo [[texture(0)]],
-                                    texture2d<float> normals [[texture(1)]]) {
-    constexpr sampler albedoSampler(min_filter::linear, mag_filter::linear);
-    constexpr sampler normalsSampler(min_filter::linear, mag_filter::linear);
+                                    texture2d<float> lightBuffer [[texture(1)]],
+                                    texture2d<float> normals [[texture(2)]]) {
+    constexpr sampler textureSampler(min_filter::linear, mag_filter::linear);
     
-    float4 outColor = albedo.sample(albedoSampler, in.texCoord);
+    float3 diffuse = lightBuffer.sample(textureSampler, in.texCoord).rgb;
     
-    return outColor;
+    diffuse *= albedo.sample(textureSampler, in.texCoord).rgb;
+    
+    return float4(diffuse, 1.0);
 }

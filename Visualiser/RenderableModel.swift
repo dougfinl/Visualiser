@@ -9,7 +9,7 @@
 import Metal
 import simd
 
-class RenderableModel: NSObject {
+class RenderableModel {
     
     var model: Model
     
@@ -26,8 +26,6 @@ class RenderableModel: NSObject {
         self.model = model
         self.mesh = mesh
         self.modelUniformBuffer = device.makeBuffer(length: MemoryLayout<ModelUniforms>.size, options: [])
-        
-        super.init()
     }
 
     func render(encoder: MTLRenderCommandEncoder) {
@@ -44,8 +42,6 @@ class RenderableModel: NSObject {
     
     func update(camera: Camera) {
         if model.isDirty {
-            NSLog("recomputing")
-            
             self.modelMatrix = translate(x: model.positionX, y: model.positionY, z: model.positionZ) * rotate(x: radians(fromDegrees: model.rotationX), y: radians(fromDegrees: model.rotationY), z: radians(fromDegrees: model.rotationZ)) * scale(x: model.mscale, y: model.mscale, z: model.mscale)
             
             let modelViewMatrix = camera.viewMatrix * self.modelMatrix

@@ -1,5 +1,5 @@
 //
-//  ModelManager.swift
+//  RenderableAssetManager.swift
 //  Visualiser
 //
 //  Created by Douglas Finlay on 06/03/2017.
@@ -8,11 +8,11 @@
 
 import MetalKit
 
-enum RenderableModelError: Error {
+enum RenderableAssetError: Error {
     case couldNotLoad
 }
 
-class ModelManager {
+class RenderableAssetManager {
     
     private var meshStore = [Mesh]()
     
@@ -69,6 +69,10 @@ class ModelManager {
         let renderableModel = RenderableModel(model: model, mesh: mesh, device: self.device)
         
         return renderableModel
+    }
+    
+    func renderableDirectionalLight(forDirectionalLight directionalLight: DirectionalLight) -> RenderableDirectionalLight? {
+        return RenderableDirectionalLight(directionalLight: directionalLight, device: self.device)
     }
     
 }
